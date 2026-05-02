@@ -5,15 +5,24 @@ const TMW_KEY  = 'rLgugfHYqEEoKnc91yU74wvxZoACo61E';
 const WWO_KEY  = '183bcc4e96b34a62a24144911260205';
 const LAT = 37.5665, LON = 126.978;
 
-function dateOffset(n) {
-  const kst = new Date(Date.now() + 9 * 3600000 + n * 86400000);
-  return kst.getUTCFullYear() + '-' + String(kst.getUTCMonth()+1).padStart(2,'0') + '-' + String(kst.getUTCDate()).padStart(2,'0');
+function kstDateStr(offsetDays) {
+  const kst = new Date(Date.now() + 9 * 3600000 + (offsetDays||0) * 86400000);
+  return kst.getUTCFullYear() + '-' +
+    String(kst.getUTCMonth()+1).padStart(2,'0') + '-' +
+    String(kst.getUTCDate()).padStart(2,'0');
+}
+
+function todayKST() { return kstDateStr(0); }
+
+function normDate(s) {
+  if(!s) return '';
+  return s.split('T')[0].trim();
 }
 
 function wmoIcon(c) {
   if(c===0) return'☀️'; if(c<=2) return'🌤️'; if(c===3) return'☁️';
   if(c<=48) return'🌫️'; if(c<=57) return'🌦️'; if(c<=67) return'🌧️';
-  if(c<=77) return'🌨️'; if(c<=82) return'🌦️'; if(c<=86) return'🌨️';
+  if(c<=77) return'🌨️'; if(c<=82) return'🌦'; if(c<=86) return'🌨️';
   if(c<=99) return'⛈️'; return'❓';
 }
 function wbIcon(c) {
@@ -27,18 +36,18 @@ function owmIcon(id) {
   if(id>=700&&id<800) return'🌫️'; if(id===800) return'☀️';
   if(id>800) return'☁️'; return'🌤️';
 }
-function wapiIcon(t) {
+function phraseIcon(t) {
   t=(t||'').toLowerCase();
   if(t.includes('thunder')) return'⛈️'; if(t.includes('snow')||t.includes('blizzard')) return'🌨️';
-  if(t.includes('rain')||t.includes('drizzle')) return'🌧️'; if(t.includes('fog')||t.includes('mist')) return'🌫️';
+  if(t.includes('rain')||t.includes('drizzle')) return'🌧'; if(t.includes('fog')||t.includes('mist')) return'🌫️';
   if(t.includes('overcast')) return'☁️'; if(t.includes('cloud')) return'⛅';
   if(t.includes('sunny')||t.includes('clear')) return'☀️'; return'🌤️';
 }
 function tmwIcon(c) {
   if(c===1000) return'☀️'; if(c===1100||c===1101) return'🌤️';
   if(c===1102||c===1001) return'☁️'; if(c===2000||c===2100) return'🌫️';
-  if(c>=4000&&c<4300) return'🌦️'; if(c>=4200) return'🌧️';
-  if(c>=5000&&c<5100) return'🌨️'; if(c>=5100) return'❄️';
+  if(c>=4000&&c<4200) return'🌦️'; if(c>=4200) return'🌧️';
+  if(c>=5000&&c<5100) return'🌨️'; if(c>=5100) return'❄';
   if(c>=8000) return'⛈️'; return'🌤️';
 }
 
@@ -46,7 +55,7 @@ async function fetchOpenMeteo() {
   const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude='+LAT+'&longitude='+LON+'&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weathercode&forecast_days=10&timezone=Asia/Seoul');
   const d = await r.json();
   return d.daily.time.map(function(date,i) {
-    return { date: date, icon: wmoIcon(d.daily.weathercode[i]),
+    return { date: normDate(date), icon: wmoIcon(d.daily.weathercode[i]),
       max: Math.round(d.daily.temperature_2m_max[i]),
       min: Math.round(d.daily.temperature_2m_min[i]),
       pop: d.daily.precipitation_probability_max[i] || 0 };
@@ -58,7 +67,7 @@ async function fetchWeatherbit() {
   const d = await r.json();
   if(!d.data) throw new Error('no data');
   return d.data.map(function(x) {
-    return { date: x.datetime, icon: wbIcon(x.weather.code),
+    return { date: normDate(x.datetime), icon: wbIcon(x.weather.code),
       max: Math.round(x.max_temp), min: Math.round(x.min_temp), pop: Math.round(x.pop) };
   });
 }
@@ -68,11 +77,16 @@ async function fetchOWM() {
   const d = await r.json();
   const byDate = {};
   d.list.forEach(function(item) {
-    const date = item.dt_txt.split(' ')[0];
+    // Convert UTC time to KST date
+    const kstMs = new Date(item.dt_txt).getTime() + 9 * 3600000;
+    const kstDate = new Date(kstMs);
+    const date = kstDate.getUTCFullYear() + '-' +
+      String(kstDate.getUTCMonth()+1).padStart(2,'0') + '-' +
+      String(kstDate.getUTCDate()).padStart(2,'0');
     if(!byDate[date]) byDate[date] = [];
     byDate[date].push(item);
   });
-  return Object.keys(byDate).map(function(date) {
+  return Object.keys(byDate).sort().map(function(date) {
     const items = byDate[date];
     const temps = items.map(function(i){ return i.main.temp; });
     const pops  = items.map(function(i){ return (i.pop||0)*100; });
@@ -89,7 +103,7 @@ async function fetchWeatherAPI() {
   const d = await r.json();
   if(d.error) throw new Error(d.error.message);
   return d.forecast.forecastday.map(function(day) {
-    return { date: day.date, icon: wapiIcon(day.day.condition.text),
+    return { date: normDate(day.date), icon: phraseIcon(day.day.condition.text),
       max: Math.round(day.day.maxtemp_c), min: Math.round(day.day.mintemp_c),
       pop: day.day.daily_chance_of_rain||0 };
   });
@@ -102,7 +116,13 @@ async function fetchTomorrow() {
   if(!days) throw new Error('no data');
   return days.slice(0,10).map(function(day) {
     const v = day.values;
-    return { date: day.time.split('T')[0],
+    // Convert UTC time to KST date
+    const kstMs = new Date(day.time).getTime() + 9 * 3600000;
+    const kstDate = new Date(kstMs);
+    const date = kstDate.getUTCFullYear() + '-' +
+      String(kstDate.getUTCMonth()+1).padStart(2,'0') + '-' +
+      String(kstDate.getUTCDate()).padStart(2,'0');
+    return { date: date,
       icon: tmwIcon(v.weatherCodeMax||v.weatherCode||1000),
       max: Math.round(v.temperatureMax), min: Math.round(v.temperatureMin),
       pop: Math.round(v.precipitationProbabilityAvg||0) };
@@ -115,10 +135,10 @@ async function fetchWWO() {
   const days = d.data && d.data.weather;
   if(!days) throw new Error('no data');
   return days.map(function(day) {
-    const desc = day.hourly && day.hourly[0] && day.hourly[0].weatherDesc && day.hourly[0].weatherDesc[0] && day.hourly[0].weatherDesc[0].value || '';
-    return { date: day.date, icon: wapiIcon(desc),
+    const desc = day.hourly&&day.hourly[0]&&day.hourly[0].weatherDesc&&day.hourly[0].weatherDesc[0]&&day.hourly[0].weatherDesc[0].value||'';
+    return { date: normDate(day.date), icon: phraseIcon(desc),
       max: parseInt(day.maxtempC), min: parseInt(day.mintempC),
-      pop: parseInt(day.hourly && day.hourly[0] && day.hourly[0].chanceofrain || 0) };
+      pop: parseInt(day.hourly&&day.hourly[0]&&day.hourly[0].chanceofrain||0) };
   });
 }
 
@@ -142,5 +162,5 @@ module.exports = async function(req, res) {
       error: results[i].status==='rejected'  ? results[i].reason.message : null };
   });
 
-  res.json({ sources: sources, updated: new Date().toISOString() });
+  res.json({ sources: sources, today: todayKST(), updated: new Date().toISOString() });
 };
