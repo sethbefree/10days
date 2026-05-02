@@ -61,9 +61,11 @@ async function fetchWeatherbit() {
 }
 
 async function fetchKMARSS() {
-  // 기상청 중기예보 RSS (해외 IP 허용)
-  const r = await fetch('https://www.kma.go.kr/weather/forecast/mid-term-rss.jsp?stnId=108');
-  const xml = await r.text();
+  const r = await fetch('https://script.google.com/macros/s/AKfycbzRf-Z4ujjerK5zBRA9myDJDTNcPwXHdnGrliSeKR7r-x8YOWh-6M67nFEbPJ1D6fnS/exec?source=kma');
+  const d = await r.json();
+  if(d.error) throw new Error(d.error);
+  return d.data;
+}
 
   // <location> 블록에서 서울 데이터 추출
   const locMatch = xml.match(/<location wl_ver="3">([\s\S]*?)<\/location>/g);
