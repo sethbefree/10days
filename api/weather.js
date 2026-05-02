@@ -1,8 +1,9 @@
-const WB_KEY  = 'a219b2ee03e84c7ca6c117667b4047d7';
-const OWM_KEY = 'add3efdf125dc186f7a4ff1b6f0c32ad';
+const WB_KEY   = 'a219b2ee03e84c7ca6c117667b4047d7';
+const OWM_KEY  = 'add3efdf125dc186f7a4ff1b6f0c32ad';
 const WAPI_KEY = '376855391f6646f585f45344262904';
+const TMW_KEY  = 'rLgugfHYqEEoKnc91yU74wvxZoACo61E';
+const WWO_KEY  = '183bcc4e96b34a62a24144911260205';
 const LAT = 37.5665, LON = 126.978;
-const APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbzRf-Z4ujjerK5zBRA9myDJDTNcPwXHdnGrliSeKR7r-x8YOWh-6M67nFEbPJ1D6fnS/exec';
 
 function dateOffset(n) {
   const kst = new Date(Date.now() + 9 * 3600000 + n * 86400000);
@@ -12,7 +13,7 @@ function dateOffset(n) {
 function wmoIcon(c) {
   if(c===0) return'☀️'; if(c<=2) return'🌤️'; if(c===3) return'☁️';
   if(c<=48) return'🌫️'; if(c<=57) return'🌦️'; if(c<=67) return'🌧️';
-  if(c<=77) return'🌨️'; if(c<=82) return'🌦️'; if(c<=86) return'🌨';
+  if(c<=77) return'🌨️'; if(c<=82) return'🌦️'; if(c<=86) return'🌨️';
   if(c<=99) return'⛈️'; return'❓';
 }
 function wbIcon(c) {
@@ -32,6 +33,13 @@ function wapiIcon(t) {
   if(t.includes('rain')||t.includes('drizzle')) return'🌧️'; if(t.includes('fog')||t.includes('mist')) return'🌫️';
   if(t.includes('overcast')) return'☁️'; if(t.includes('cloud')) return'⛅';
   if(t.includes('sunny')||t.includes('clear')) return'☀️'; return'🌤️';
+}
+function tmwIcon(c) {
+  if(c===1000) return'☀️'; if(c===1100||c===1101) return'🌤️';
+  if(c===1102||c===1001) return'☁️'; if(c===2000||c===2100) return'🌫️';
+  if(c>=4000&&c<4300) return'🌦️'; if(c>=4200) return'🌧️';
+  if(c>=5000&&c<5100) return'🌨️'; if(c>=5100) return'❄️';
+  if(c>=8000) return'⛈️'; return'🌤️';
 }
 
 async function fetchOpenMeteo() {
@@ -53,13 +61,6 @@ async function fetchWeatherbit() {
     return { date: x.datetime, icon: wbIcon(x.weather.code),
       max: Math.round(x.max_temp), min: Math.round(x.min_temp), pop: Math.round(x.pop) };
   });
-}
-
-async function fetchKMA() {
-  const r = await fetch(APPS_SCRIPT+'?source=kma');
-  const d = await r.json();
-  if(d.error) throw new Error(d.error);
-  return d.data;
 }
 
 async function fetchOWM() {
@@ -94,6 +95,33 @@ async function fetchWeatherAPI() {
   });
 }
 
+async function fetchTomorrow() {
+  const r = await fetch('https://api.tomorrow.io/v4/weather/forecast?location='+LAT+','+LON+'&timesteps=1d&units=metric&apikey='+TMW_KEY);
+  const d = await r.json();
+  const days = d.timelines && d.timelines.daily;
+  if(!days) throw new Error('no data');
+  return days.slice(0,10).map(function(day) {
+    const v = day.values;
+    return { date: day.time.split('T')[0],
+      icon: tmwIcon(v.weatherCodeMax||v.weatherCode||1000),
+      max: Math.round(v.temperatureMax), min: Math.round(v.temperatureMin),
+      pop: Math.round(v.precipitationProbabilityAvg||0) };
+  });
+}
+
+async function fetchWWO() {
+  const r = await fetch('https://api.worldweatheronline.com/premium/v1/weather.ashx?key='+WWO_KEY+'&q=Seoul&num_of_days=10&format=json&tp=24');
+  const d = await r.json();
+  const days = d.data && d.data.weather;
+  if(!days) throw new Error('no data');
+  return days.map(function(day) {
+    const desc = day.hourly && day.hourly[0] && day.hourly[0].weatherDesc && day.hourly[0].weatherDesc[0] && day.hourly[0].weatherDesc[0].value || '';
+    return { date: day.date, icon: wapiIcon(desc),
+      max: parseInt(day.maxtempC), min: parseInt(day.mintempC),
+      pop: parseInt(day.hourly && day.hourly[0] && day.hourly[0].chanceofrain || 0) };
+  });
+}
+
 module.exports = async function(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Cache-Control', 's-maxage=1800, stale-while-revalidate');
@@ -101,9 +129,10 @@ module.exports = async function(req, res) {
   const SOURCES = [
     { name: 'Open-Meteo',  color: '#34d399', fn: fetchOpenMeteo  },
     { name: 'Weatherbit',  color: '#60a5fa', fn: fetchWeatherbit  },
-    { name: 'KMA',         color: '#f472b6', fn: fetchKMA         },
     { name: 'OpenWeather', color: '#fbbf24', fn: fetchOWM         },
     { name: 'WeatherAPI',  color: '#a78bfa', fn: fetchWeatherAPI  },
+    { name: 'Tomorrow.io', color: '#fb923c', fn: fetchTomorrow    },
+    { name: 'WorldWeather',color: '#38bdf8', fn: fetchWWO         },
   ];
 
   const results = await Promise.allSettled(SOURCES.map(function(s){ return s.fn(); }));
