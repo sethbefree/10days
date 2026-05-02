@@ -2,6 +2,7 @@ const WB_KEY  = 'a219b2ee03e84c7ca6c117667b4047d7';
 const OWM_KEY = 'add3efdf125dc186f7a4ff1b6f0c32ad';
 const WAPI_KEY = '376855391f6646f585f45344262904';
 const LAT = 37.5665, LON = 126.978;
+const APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbzRf-Z4ujjerK5zBRA9myDJDTNcPwXHdnGrliSeKR7r-x8YOWh-6M67nFEbPJ1D6fnS/exec';
 
 function dateOffset(n) {
   const kst = new Date(Date.now() + 9 * 3600000 + n * 86400000);
@@ -11,12 +12,12 @@ function dateOffset(n) {
 function wmoIcon(c) {
   if(c===0) return'☀️'; if(c<=2) return'🌤️'; if(c===3) return'☁️';
   if(c<=48) return'🌫️'; if(c<=57) return'🌦️'; if(c<=67) return'🌧️';
-  if(c<=77) return'🌨️'; if(c<=82) return'🌦️'; if(c<=86) return'🌨️';
-  if(c<=99) return'⛈'; return'❓';
+  if(c<=77) return'🌨️'; if(c<=82) return'🌦️'; if(c<=86) return'🌨';
+  if(c<=99) return'⛈️'; return'❓';
 }
 function wbIcon(c) {
   if(c===800) return'☀️'; if(c>800&&c<900) return c<=802?'⛅':'☁️';
-  if(c>=200&&c<300) return'⛈'; if(c>=300&&c<400) return'🌦️';
+  if(c>=200&&c<300) return'⛈️'; if(c>=300&&c<400) return'🌦️';
   if(c>=500&&c<600) return'🌧️'; if(c>=600&&c<700) return'🌨️'; return'🌫️';
 }
 function owmIcon(id) {
@@ -31,12 +32,6 @@ function wapiIcon(t) {
   if(t.includes('rain')||t.includes('drizzle')) return'🌧️'; if(t.includes('fog')||t.includes('mist')) return'🌫️';
   if(t.includes('overcast')) return'☁️'; if(t.includes('cloud')) return'⛅';
   if(t.includes('sunny')||t.includes('clear')) return'☀️'; return'🌤️';
-}
-function kmaRssIcon(wf) {
-  if(!wf) return'❓';
-  if(wf.includes('맑음')) return'☀️'; if(wf.includes('구름조금')) return'🌤️';
-  if(wf.includes('구름많음')) return'⛅'; if(wf.includes('비')) return'🌧️';
-  if(wf.includes('눈')) return'🌨️'; if(wf.includes('흐림')) return'☁️'; return'🌤️';
 }
 
 async function fetchOpenMeteo() {
@@ -60,55 +55,11 @@ async function fetchWeatherbit() {
   });
 }
 
-async function fetchKMARSS() {
-  const r = await fetch('https://script.google.com/macros/s/AKfycbzRf-Z4ujjerK5zBRA9myDJDTNcPwXHdnGrliSeKR7r-x8YOWh-6M67nFEbPJ1D6fnS/exec?source=kma');
+async function fetchKMA() {
+  const r = await fetch(APPS_SCRIPT+'?source=kma');
   const d = await r.json();
   if(d.error) throw new Error(d.error);
   return d.data;
-}
-
-  // <location> 블록에서 서울 데이터 추출
-  const locMatch = xml.match(/<location wl_ver="3">([\s\S]*?)<\/location>/g);
-  if(!locMatch) throw new Error('RSS location not found');
-
-  // 서울 블록 찾기
-  let seoulBlock = null;
-  for(let i=0;i<locMatch.length;i++){
-    if(locMatch[i].includes('<city>서울</city>')||locMatch[i].includes('서울')) {
-      seoulBlock = locMatch[i];
-      break;
-    }
-  }
-  if(!seoulBlock) seoulBlock = locMatch[0];
-
-  // <data> 블록들 파싱
-  const dataBlocks = seoulBlock.match(/<data>([\s\S]*?)<\/data>/g)||[];
-  const data = [];
-
-  dataBlocks.forEach(function(block) {
-    const dateM = block.match(/<tmEf>([\s\S]*?)<\/tmEf>/);
-    const tmaxM = block.match(/<taMax>([\s\S]*?)<\/taMax>/);
-    const tminM = block.match(/<taMin>([\s\S]*?)<\/taMin>/);
-    const popM  = block.match(/<rnSt>([\s\S]*?)<\/rnSt>/);
-    const wfM   = block.match(/<wf>([\s\S]*?)<\/wf>/);
-
-    if(!dateM) return;
-    const dateStr = dateM[1].trim().split(' ')[0]; // YYYY-MM-DD
-    const existing = data.find(function(d){ return d.date===dateStr; });
-
-    if(!existing) {
-      data.push({
-        date: dateStr,
-        icon: kmaRssIcon(wfM?wfM[1].trim():''),
-        max:  tmaxM ? parseInt(tmaxM[1].trim()) : null,
-        min:  tminM ? parseInt(tminM[1].trim()) : null,
-        pop:  popM  ? parseInt(popM[1].trim())  : 0,
-      });
-    }
-  });
-
-  if(!data.length) throw new Error('RSS parse failed');
-  return data.slice(0,10);
 }
 
 async function fetchOWM() {
@@ -150,7 +101,7 @@ module.exports = async function(req, res) {
   const SOURCES = [
     { name: 'Open-Meteo',  color: '#34d399', fn: fetchOpenMeteo  },
     { name: 'Weatherbit',  color: '#60a5fa', fn: fetchWeatherbit  },
-    { name: 'KMA',         color: '#f472b6', fn: fetchKMARSS      },
+    { name: 'KMA',         color: '#f472b6', fn: fetchKMA         },
     { name: 'OpenWeather', color: '#fbbf24', fn: fetchOWM         },
     { name: 'WeatherAPI',  color: '#a78bfa', fn: fetchWeatherAPI  },
   ];
