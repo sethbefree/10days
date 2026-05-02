@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -13,7 +12,6 @@ body { background: #07070f; color: #e2e8f0; font-family: 'DM Mono', 'Courier New
 .ti { font-size: 18px; font-weight: 700; color: #f8fafc; letter-spacing: -.5px; }
 .su { font-size: 11px; color: #475569; margin-top: 4px; }
 .rf { background: transparent; border: 1px solid #1e293b; color: #64748b; border-radius: 6px; padding: 6px 14px; font-size: 11px; cursor: pointer; font-family: inherit; }
-.rf:hover { border-color: #334155; color: #94a3b8; }
 .bgs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
 .bg { display: flex; align-items: center; gap: 5px; background: #0f172a; border-radius: 6px; padding: 3px 10px; font-size: 11px; border: 1px solid transparent; }
 .dot { width: 6px; height: 6px; border-radius: 50%; }
@@ -73,23 +71,17 @@ tr { border-bottom: 1px solid #0f172a; } tr:last-child { border-bottom: none; }
 <script>
 const WD = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
-function todayKST() {
-  return new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Seoul' });
-}
-
 function getDates() {
   const dates = [];
   const now = new Date();
-  const kstOffset = 9 * 60;
   const utc = now.getTime() + now.getTimezoneOffset() * 60000;
-  const kst = new Date(utc + kstOffset * 60000);
+  const kst = new Date(utc + 9 * 3600000);
   for (let i = 0; i < 10; i++) {
-    const d = new Date(kst);
-    d.setDate(kst.getDate() + i);
-    const y = d.getFullYear();
-    const m = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    dates.push(`${y}-${m}-${day}`);
+    const d = new Date(kst.getTime() + i * 86400000);
+    const y = d.getUTCFullYear();
+    const m = String(d.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(d.getUTCDate()).padStart(2, '0');
+    dates.push(y + '-' + m + '-' + day);
   }
   return dates;
 }
@@ -101,76 +93,66 @@ function todayKST() {
 async function load() {
   document.getElementById('upd').textContent = 'Updating...';
   document.getElementById('badges').innerHTML = '';
-  document.getElementById('content').innerHTML = `<div class="loading"><div class="sp">🌤️</div><div class="lt">Fetching weather from 5 sources...</div><div class="ls">This takes a few seconds on first load.</div></div>`;
+  document.getElementById('content').innerHTML = '<div class="loading"><div class="sp">🌤️</div><div class="lt">Fetching weather from 5 sources...</div><div class="ls">This takes a few seconds on first load.</div></div>';
 
   try {
     const res = await fetch('/api/weather');
-    const { sources, updated } = await res.json();
+    const json = await res.json();
+    const sources = json.sources;
+    const updated = json.updated;
 
     const upd = new Date(updated);
-    document.getElementById('upd').textContent = 'Updated: ' + upd.toLocaleTimeString('en-US', { timeZone: 'Asia/Seoul', hour: '2-digit', minute: '2-digit' }) + ' KST';
+    const h = String(upd.getUTCHours() + 9).padStart(2,'0');
+    const min = String(upd.getUTCMinutes()).padStart(2,'0');
+    document.getElementById('upd').textContent = 'Updated: ' + h + ':' + min + ' KST';
 
     renderBadges(sources);
     renderTable(sources);
   } catch(e) {
-    document.getElementById('content').innerHTML = `<div class="loading"><div class="lt" style="color:#ef4444">Failed to load. Please refresh.</div><div class="ls">${e.message}</div></div>`;
+    document.getElementById('content').innerHTML = '<div class="loading"><div class="lt" style="color:#ef4444">Failed to load. Please refresh.</div><div class="ls">' + e.message + '</div></div>';
     document.getElementById('upd').textContent = 'Error';
   }
 }
 
 function renderBadges(sources) {
-  document.getElementById('badges').innerHTML = sources.map(s => `
-    <div class="bg" style="border-color:${s.color}30">
-      <div class="dot" style="background:${s.error ? '#ef4444' : s.color}"></div>
-      <span style="color:${s.color};font-weight:600">${s.name}</span>
-      <span style="color:#334155">${s.error ? 'Error' : s.data.length + ' days'}</span>
-    </div>`).join('');
+  document.getElementById('badges').innerHTML = sources.map(function(s) {
+    return '<div class="bg" style="border-color:' + s.color + '30"><div class="dot" style="background:' + (s.error ? '#ef4444' : s.color) + '"></div><span style="color:' + s.color + ';font-weight:600">' + s.name + '</span><span style="color:#334155">' + (s.error ? 'Error' : s.data.length + ' days') + '</span></div>';
+  }).join('');
 }
 
 function renderTable(sources) {
   const dates = getDates();
   const today = todayKST();
 
-  let hdr = '<th class="sc">Source</th>';
-  dates.forEach(d => {
-    const dt = new Date(d + 'T00:00:00');
-    const md = `${dt.getMonth()+1}/${dt.getDate()}`;
-    const wd = WD[dt.getDay()];
-    const cls = d===today ? 'today' : dt.getDay()===0 ? 'sun' : dt.getDay()===6 ? 'sat' : '';
-    hdr += `<th class="dc ${cls}"><div class="md">${md}</div><div class="wd">${wd}</div></th>`;
+  var hdr = '<th class="sc">Source</th>';
+  dates.forEach(function(d) {
+    var parts = d.split('-');
+    var dt = new Date(Date.UTC(parseInt(parts[0]), parseInt(parts[1])-1, parseInt(parts[2])));
+    var md = (dt.getUTCMonth()+1) + '/' + dt.getUTCDate();
+    var wd = WD[dt.getUTCDay()];
+    var cls = d===today ? 'today' : dt.getUTCDay()===0 ? 'sun' : dt.getUTCDay()===6 ? 'sat' : '';
+    hdr += '<th class="dc ' + cls + '"><div class="md">' + md + '</div><div class="wd">' + wd + '</div></th>';
   });
 
-  let rows = '';
-  sources.forEach(src => {
-    rows += `<tr><td class="sn" style="color:${src.color}">${src.name}</td>`;
-    dates.forEach(d => {
-      const c = (src.data||[]).find(x => x.date === d);
-      if(!c) {
-        rows += `<td class="cl"><span class="da">${src.error ? 'Error' : '—'}</span></td>`;
+  var rows = '';
+  sources.forEach(function(src) {
+    rows += '<tr><td class="sn" style="color:' + src.color + '">' + src.name + '</td>';
+    dates.forEach(function(d) {
+      var c = (src.data||[]).find(function(x){ return x.date === d; });
+      if (!c) {
+        rows += '<td class="cl"><span class="da">' + (src.error ? 'Error' : '—') + '</span></td>';
       } else {
-        const pc = (c.pop||0)>=60 ? '#60a5fa' : (c.pop||0)>=30 ? '#93c5fd' : '#334155';
-        rows += `<td class="cl${d===today?' td':''}">
-          <div class="ic">${c.icon||'🌤️'}</div>
-          <div class="mx">${c.max!=null ? c.max+'°' : '—'}</div>
-          <div class="mn">${c.min!=null ? c.min+'°' : '—'}</div>
-          <div class="pp" style="color:${pc}">${c.pop??0}%</div>
-        </td>`;
+        var pc = (c.pop||0)>=60 ? '#60a5fa' : (c.pop||0)>=30 ? '#93c5fd' : '#334155';
+        rows += '<td class="cl' + (d===today?' td':'') + '"><div class="ic">' + (c.icon||'🌤️') + '</div><div class="mx">' + (c.max!=null?c.max+'°':'—') + '</div><div class="mn">' + (c.min!=null?c.min+'°':'—') + '</div><div class="pp" style="color:' + pc + '">' + (c.pop||0) + '%</div></td>';
       }
     });
     rows += '</tr>';
   });
 
-  document.getElementById('content').innerHTML = `
-    <div class="tw">
-      <table>
-        <thead><tr>${hdr}</tr></thead>
-        <tbody>${rows}</tbody>
-      </table>
-    </div>`;
+  document.getElementById('content').innerHTML = '<div class="tw"><table><thead><tr>' + hdr + '</tr></thead><tbody>' + rows + '</tbody></table></div>';
 }
 
 load();
 </script>
-
 </body>
 </html>
