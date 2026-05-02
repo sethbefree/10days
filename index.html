@@ -8,72 +8,68 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --cream:   #f5f0e8;
+  --cream: #f5f0e8;
   --parchment: #ede5d8;
   --warm-white: #faf7f2;
-  --ink:     #1c1612;
-  --brown:   #3d2b1f;
-  --tan:     #8b6f5e;
-  --gold:    #b8966a;
+  --ink: #1c1612;
+  --brown: #3d2b1f;
+  --tan: #8b6f5e;
+  --gold: #b8966a;
   --gold-lt: #d4b896;
-  --rule:    #d6c9b8;
-  --muted:   #9e8e80;
-  --rain:    #6b8fa3;
-  --sun:     #c9952a;
+  --rule: #d6c9b8;
+  --muted: #9e8e80;
+  --rain: #6b8fa3;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
 body {
   background: var(--cream);
   color: var(--ink);
   font-family: 'Jost', sans-serif;
   font-weight: 300;
   min-height: 100vh;
-  padding: 0;
 }
 
 /* ── Header ── */
 .header {
   background: var(--brown);
-  padding: 24px 40px;
+  padding: 18px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 2px solid var(--gold);
+  gap: 12px;
 }
-.header-left {}
 .brand {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 400;
-  letter-spacing: 0.35em;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--gold-lt);
   margin-bottom: 4px;
 }
 .title {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 26px;
+  font-size: 22px;
   font-weight: 300;
   color: var(--warm-white);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
 }
-.title em {
-  font-style: italic;
-  color: var(--gold-lt);
-}
+.title em { font-style: italic; color: var(--gold-lt); }
 .header-right {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 6px;
+  flex-shrink: 0;
 }
 .upd {
-  font-size: 10px;
-  letter-spacing: 0.15em;
+  font-size: 9px;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--muted);
   color: #a08878;
+  white-space: nowrap;
 }
 .rf-btn {
   background: transparent;
@@ -81,69 +77,83 @@ body {
   color: var(--gold-lt);
   font-family: 'Jost', sans-serif;
   font-weight: 400;
-  font-size: 10px;
+  font-size: 9px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  padding: 6px 18px;
+  padding: 5px 14px;
   cursor: pointer;
   transition: all 0.2s;
+  white-space: nowrap;
 }
-.rf-btn:hover { background: var(--gold); color: var(--brown); }
+.rf-btn:hover, .rf-btn:active { background: var(--gold); color: var(--brown); }
 
 /* ── Wrap ── */
-.wrap { max-width: 1100px; margin: 0 auto; padding: 36px 40px; }
+.wrap { padding: 20px 16px; }
 
-/* ── Source badges ── */
-.badges {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-bottom: 28px;
-}
+/* ── Badges ── */
+.badges { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; }
 .badge {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 5px 14px;
+  display: flex; align-items: center; gap: 6px;
+  padding: 4px 10px;
   border: 1px solid var(--rule);
   background: var(--warm-white);
-  font-size: 10px;
-  letter-spacing: 0.15em;
+  font-size: 9px;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   font-weight: 400;
 }
-.badge-dot { width: 5px; height: 5px; border-radius: 50%; }
-.badge-name { color: var(--brown); font-weight: 500; }
+.badge-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
 .badge-days { color: var(--muted); }
 
-/* ── Rule ── */
-.rule {
-  height: 1px;
-  background: linear-gradient(to right, var(--gold), var(--rule), transparent);
-  margin-bottom: 28px;
-}
+.rule { height: 1px; background: linear-gradient(to right, var(--gold), var(--rule), transparent); margin-bottom: 20px; }
 
 /* ── Table ── */
-.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-table { border-collapse: collapse; width: 100%; min-width: 820px; }
+.table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+}
+/* 스크롤 힌트 그라데이션 */
+.table-outer {
+  position: relative;
+}
+.table-outer::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 32px;
+  background: linear-gradient(to right, transparent, var(--cream));
+  pointer-events: none;
+  border-radius: 0 2px 2px 0;
+}
 
-/* Header row */
+table { border-collapse: collapse; width: 100%; }
+
+/* 모바일: 소스 컬럼 고정 */
+.th-source, .td-source {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: var(--warm-white);
+}
+
 .th-source {
-  padding: 12px 20px;
+  padding: 10px 12px;
   text-align: left;
-  font-size: 9px;
-  letter-spacing: 0.3em;
+  font-size: 8px;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
   color: var(--muted);
   font-weight: 400;
   border-bottom: 2px solid var(--gold);
-  width: 140px;
   white-space: nowrap;
-  background: var(--warm-white);
+  min-width: 90px;
+  border-right: 1px solid var(--rule);
 }
 .th-date {
-  padding: 12px 6px;
-  min-width: 76px;
+  padding: 10px 4px;
+  min-width: 64px;
   text-align: center;
   border-bottom: 2px solid var(--rule);
   background: var(--warm-white);
@@ -151,129 +161,110 @@ table { border-collapse: collapse; width: 100%; min-width: 820px; }
 .th-date.today { border-bottom-color: var(--gold); background: #fdf8f0; }
 .th-date.sun .date-md { color: #8b4a3a; }
 .th-date.sat .date-md { color: var(--rain); }
-
 .date-md {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 400;
   color: var(--brown);
   line-height: 1.2;
 }
 .th-date.today .date-md { color: var(--gold); }
 .date-wd {
-  font-size: 9px;
-  letter-spacing: 0.2em;
+  font-size: 8px;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--muted);
   margin-top: 2px;
 }
 .th-date.today .date-wd { color: var(--gold-lt); }
 
-/* Body rows */
 tr { border-bottom: 1px solid var(--parchment); }
 tr:last-child { border-bottom: none; }
-tr:hover td { background: #fdf9f4; }
 
 .td-source {
-  padding: 14px 20px;
-  font-size: 10px;
-  letter-spacing: 0.18em;
+  padding: 12px 12px;
+  font-size: 9px;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   font-weight: 500;
   white-space: nowrap;
   border-right: 1px solid var(--rule);
-  background: var(--warm-white);
 }
 .td-cell {
-  padding: 10px 4px;
+  padding: 8px 2px;
   text-align: center;
   border-left: 1px solid var(--parchment);
-  min-width: 76px;
+  min-width: 64px;
   background: var(--cream);
-  transition: background 0.15s;
 }
 .td-cell.today { background: #fdf8f0; }
 
-.cell-icon { font-size: 20px; line-height: 1.3; }
+.cell-icon { font-size: 17px; line-height: 1.3; }
 .cell-max {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--brown);
   line-height: 1.2;
 }
 .cell-min {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 300;
   color: var(--tan);
   line-height: 1.2;
 }
-.cell-pop {
-  font-size: 10px;
-  letter-spacing: 0.05em;
-  margin-top: 2px;
-  color: var(--muted);
-}
-.cell-pop.hi { color: var(--rain); }
-.cell-dash { color: var(--rule); font-size: 14px; }
-.cell-err { color: var(--rule); font-size: 9px; letter-spacing: 0.1em; }
+.cell-pop { font-size: 9px; margin-top: 1px; color: var(--muted); }
+.cell-pop.hi { color: var(--rain); font-weight: 500; }
+.cell-dash { color: var(--rule); font-size: 13px; }
+.cell-err { color: var(--rule); font-size: 8px; letter-spacing: 0.1em; }
 
 /* ── Loading ── */
-.loading {
-  text-align: center;
-  padding: 80px 20px;
-  background: var(--warm-white);
-  border: 1px solid var(--rule);
-}
-.loading-icon {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 32px;
-  font-style: italic;
-  color: var(--gold);
-  margin-bottom: 16px;
-}
-.loading-text {
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--tan);
-}
-.loading-sub {
-  font-size: 11px;
-  color: var(--muted);
-  margin-top: 8px;
-  font-style: italic;
-}
+.loading { text-align: center; padding: 60px 20px; background: var(--warm-white); border: 1px solid var(--rule); }
+.loading-icon { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-style: italic; color: var(--gold); margin-bottom: 14px; }
+.loading-text { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--tan); }
+.loading-sub { font-size: 11px; color: var(--muted); margin-top: 8px; font-style: italic; }
 
-/* ── Footer legend ── */
+/* ── Legend ── */
 .legend {
-  margin-top: 20px;
+  margin-top: 16px;
   display: flex;
-  gap: 20px;
+  gap: 16px;
   flex-wrap: wrap;
   align-items: center;
-  font-size: 10px;
+  font-size: 9px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted);
-  padding-top: 16px;
+  padding-top: 14px;
   border-top: 1px solid var(--rule);
 }
-.legend-dot {
-  display: inline-block;
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  margin-right: 5px;
-  vertical-align: middle;
+.legend-dot { display: inline-block; width: 5px; height: 5px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
+.legend-note { margin-left: auto; font-style: italic; text-transform: none; letter-spacing: 0; font-size: 10px; }
+
+/* ── Desktop ── */
+@media (min-width: 768px) {
+  .header { padding: 24px 40px; }
+  .title { font-size: 26px; }
+  .brand { font-size: 11px; }
+  .wrap { padding: 32px 40px; }
+  .th-source { min-width: 130px; font-size: 9px; padding: 12px 20px; }
+  .td-source { font-size: 10px; padding: 14px 20px; }
+  .th-date { min-width: 76px; }
+  .td-cell { min-width: 76px; padding: 10px 4px; }
+  .date-md { font-size: 17px; }
+  .cell-icon { font-size: 20px; }
+  .cell-max { font-size: 15px; }
+  .cell-min { font-size: 13px; }
+  .cell-pop { font-size: 10px; }
+  .table-outer::after { display: none; }
 }
-.legend-note { margin-left: auto; font-style: italic; text-transform: none; letter-spacing: 0; }
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div class="header-left">
+  <div>
     <div class="brand">Coach — Production Weather</div>
     <div class="title">Seoul <em>10-Day</em> Forecast</div>
   </div>
@@ -286,11 +277,13 @@ tr:hover td { background: #fdf9f4; }
 <div class="wrap">
   <div id="badges" class="badges"></div>
   <div class="rule"></div>
-  <div id="content">
-    <div class="loading">
-      <div class="loading-icon">Fetching</div>
-      <div class="loading-text">Retrieving data from 6 sources</div>
-      <div class="loading-sub">This takes a few seconds on first load</div>
+  <div class="table-outer">
+    <div id="content">
+      <div class="loading">
+        <div class="loading-icon">Fetching</div>
+        <div class="loading-text">Retrieving data from 6 sources</div>
+        <div class="loading-sub">This takes a few seconds on first load</div>
+      </div>
     </div>
   </div>
   <div class="legend">
@@ -310,9 +303,9 @@ function getDates() {
   for (var i = 0; i < 10; i++) {
     var d = new Date(kst.getTime() + i * 86400000);
     var y = d.getUTCFullYear();
-    var m = String(d.getUTCMonth() + 1).padStart(2, '0');
-    var day = String(d.getUTCDate()).padStart(2, '0');
-    dates.push(y + '-' + m + '-' + day);
+    var m = String(d.getUTCMonth()+1).padStart(2,'0');
+    var day = String(d.getUTCDate()).padStart(2,'0');
+    dates.push(y+'-'+m+'-'+day);
   }
   return dates;
 }
@@ -329,100 +322,85 @@ function load() {
     '<div class="loading-sub">This takes a few seconds on first load</div></div>';
 
   fetch('/api/weather')
-    .then(function(r) { return r.json(); })
-    .then(function(json) {
+    .then(function(r){ return r.json(); })
+    .then(function(json){
       var upd = new Date(json.updated);
       var hh = upd.getUTCHours() + 9;
-      if (hh >= 24) hh -= 24;
+      if(hh>=24) hh-=24;
       var mm = String(upd.getUTCMinutes()).padStart(2,'0');
-      document.getElementById('upd').textContent =
-        'Updated ' + String(hh).padStart(2,'0') + ':' + mm + ' KST';
+      document.getElementById('upd').textContent = 'Updated '+String(hh).padStart(2,'0')+':'+mm+' KST';
       renderBadges(json.sources);
       renderTable(json.sources);
     })
-    .catch(function(e) {
+    .catch(function(e){
       document.getElementById('content').innerHTML =
         '<div class="loading"><div class="loading-text" style="color:#8b4a3a">Failed to load — please refresh</div>' +
-        '<div class="loading-sub">' + e.message + '</div></div>';
+        '<div class="loading-sub">'+e.message+'</div></div>';
       document.getElementById('upd').textContent = 'Error';
     })
-    .finally(function() {
-      document.getElementById('rfBtn').disabled = false;
-    });
+    .finally(function(){ document.getElementById('rfBtn').disabled = false; });
 }
 
 function renderBadges(sources) {
   var colors = ['#6b8c6b','#6b8fa3','#a07850','#8b6f9e','#c9952a','#5a7a8a'];
   var html = '';
-  for (var i = 0; i < sources.length; i++) {
-    var s = sources[i];
-    var c = s.error ? '#c0a090' : colors[i % colors.length];
-    html += '<div class="badge">' +
-      '<div class="badge-dot" style="background:' + c + '"></div>' +
-      '<span class="badge-name" style="color:' + c + '">' + s.name + '</span>' +
-      '<span class="badge-days">' + (s.error ? 'error' : s.data.length + ' days') + '</span>' +
-      '</div>';
+  for(var i=0;i<sources.length;i++){
+    var s=sources[i], c=s.error?'#c0a090':colors[i%colors.length];
+    html+='<div class="badge"><div class="badge-dot" style="background:'+c+'"></div>'+
+      '<span class="badge-name" style="color:'+c+';font-weight:500">'+s.name+'</span>'+
+      '<span class="badge-days">'+(s.error?'error':s.data.length+' days')+'</span></div>';
   }
-  document.getElementById('badges').innerHTML = html;
+  document.getElementById('badges').innerHTML=html;
 }
 
 function renderTable(sources) {
-  var colors = ['#6b8c6b','#6b8fa3','#a07850','#8b6f9e','#c9952a','#5a7a8a'];
-  var dates = getDates();
-  var today = todayKST();
+  var colors=['#6b8c6b','#6b8fa3','#a07850','#8b6f9e','#c9952a','#5a7a8a'];
+  var dates=getDates(), today=todayKST();
 
-  var hdr = '<th class="th-source">Source</th>';
-  for (var i = 0; i < dates.length; i++) {
-    var d = dates[i];
-    var p = d.split('-');
-    var dt = new Date(Date.UTC(parseInt(p[0]), parseInt(p[1])-1, parseInt(p[2])));
-    var md = (dt.getUTCMonth()+1) + '/' + dt.getUTCDate();
-    var wd = WD[dt.getUTCDay()];
-    var cls = d === today ? 'today' : dt.getUTCDay()===0 ? 'sun' : dt.getUTCDay()===6 ? 'sat' : '';
-    hdr += '<th class="th-date ' + cls + '">' +
-      '<div class="date-md">' + md + '</div>' +
-      '<div class="date-wd">' + wd + '</div></th>';
+  var hdr='<th class="th-source">Source</th>';
+  for(var i=0;i<dates.length;i++){
+    var d=dates[i], p=d.split('-');
+    var dt=new Date(Date.UTC(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2])));
+    var md=(dt.getUTCMonth()+1)+'/'+dt.getUTCDate();
+    var wd=WD[dt.getUTCDay()];
+    var cls=d===today?'today':dt.getUTCDay()===0?'sun':dt.getUTCDay()===6?'sat':'';
+    hdr+='<th class="th-date '+cls+'"><div class="date-md">'+md+'</div><div class="date-wd">'+wd+'</div></th>';
   }
 
-  var rows = '';
-  for (var si = 0; si < sources.length; si++) {
-    var src = sources[si];
-    var col = colors[si % colors.length];
-    rows += '<tr><td class="td-source" style="color:' + col + '">' + src.name + '</td>';
-    for (var di = 0; di < dates.length; di++) {
-      var date = dates[di];
-      var c = null;
-      for (var ci = 0; ci < (src.data||[]).length; ci++) {
-        if (src.data[ci].date === date) { c = src.data[ci]; break; }
+  var rows='';
+  for(var si=0;si<sources.length;si++){
+    var src=sources[si], col=colors[si%colors.length];
+    rows+='<tr><td class="td-source" style="color:'+col+'">'+src.name+'</td>';
+    for(var di=0;di<dates.length;di++){
+      var date=dates[di], c=null;
+      for(var ci=0;ci<(src.data||[]).length;ci++){
+        if(src.data[ci].date===date){c=src.data[ci];break;}
       }
-      var isToday = date === today;
-      var tdCls = 'td-cell' + (isToday ? ' today' : '');
-      if (!c) {
-        rows += '<td class="' + tdCls + '">' +
-          '<span class="' + (src.error ? 'cell-err' : 'cell-dash') + '">' +
-          (src.error ? 'n/a' : '—') + '</span></td>';
+      var isToday=date===today;
+      var tdCls='td-cell'+(isToday?' today':'');
+      if(!c){
+        rows+='<td class="'+tdCls+'"><span class="'+(src.error?'cell-err':'cell-dash')+'">'+(src.error?'n/a':'—')+'</span></td>';
       } else {
-        var pop = c.pop || 0;
-        var popCls = pop >= 40 ? 'cell-pop hi' : 'cell-pop';
-        rows += '<td class="' + tdCls + '">' +
-          '<div class="cell-icon">' + (c.icon||'🌤️') + '</div>' +
-          '<div class="cell-max">' + (c.max!=null ? c.max+'°' : '—') + '</div>' +
-          '<div class="cell-min">' + (c.min!=null ? c.min+'°' : '—') + '</div>' +
-          '<div class="' + popCls + '">' + pop + '%</div>' +
-          '</td>';
+        var pop=c.pop||0;
+        var popCls=pop>=40?'cell-pop hi':'cell-pop';
+        rows+='<td class="'+tdCls+'">'+
+          '<div class="cell-icon">'+(c.icon||'🌤️')+'</div>'+
+          '<div class="cell-max">'+(c.max!=null?c.max+'°':'—')+'</div>'+
+          '<div class="cell-min">'+(c.min!=null?c.min+'°':'—')+'</div>'+
+          '<div class="'+popCls+'">'+pop+'%</div></td>';
       }
     }
-    rows += '</tr>';
+    rows+='</tr>';
   }
 
-  document.getElementById('content').innerHTML =
-    '<div class="table-wrap"><table>' +
-    '<thead><tr>' + hdr + '</tr></thead>' +
-    '<tbody>' + rows + '</tbody>' +
+  document.getElementById('content').innerHTML=
+    '<div class="table-wrap"><table>'+
+    '<thead><tr>'+hdr+'</tr></thead>'+
+    '<tbody>'+rows+'</tbody>'+
     '</table></div>';
 }
 
-document.getElementById('rfBtn').addEventListener('click', function() { load(); });
+document.getElementById('rfBtn').addEventListener('click', function(){ load(); });
 load();
 </script>
 </body>
