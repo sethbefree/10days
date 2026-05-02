@@ -3,77 +3,310 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Seoul 10-Day Weather</title>
+<title>Seoul Weather — Production</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
+:root {
+  --cream:   #f5f0e8;
+  --parchment: #ede5d8;
+  --warm-white: #faf7f2;
+  --ink:     #1c1612;
+  --brown:   #3d2b1f;
+  --tan:     #8b6f5e;
+  --gold:    #b8966a;
+  --gold-lt: #d4b896;
+  --rule:    #d6c9b8;
+  --muted:   #9e8e80;
+  --rain:    #6b8fa3;
+  --sun:     #c9952a;
+}
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: #07070f; color: #e2e8f0; font-family: 'DM Mono', 'Courier New', monospace; min-height: 100vh; padding: 20px 14px; }
-.wrap { max-width: 1000px; margin: 0 auto; }
-.hd { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-.ti { font-size: 18px; font-weight: 700; color: #f8fafc; letter-spacing: -.5px; }
-.su { font-size: 11px; color: #475569; margin-top: 4px; }
-.rf { background: transparent; border: 1px solid #334155; color: #94a3b8; border-radius: 6px; padding: 8px 16px; font-size: 12px; cursor: pointer; font-family: inherit; -webkit-appearance: none; }
-.bgs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
-.bg { display: flex; align-items: center; gap: 5px; background: #0f172a; border-radius: 6px; padding: 3px 10px; font-size: 11px; border: 1px solid transparent; }
-.dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-.tw { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 10px; border: 1px solid #1e293b; background: #0b0b18; }
-table { border-collapse: collapse; width: 100%; min-width: 780px; }
-th, td { text-align: center; }
-.sc { padding: 10px 14px; text-align: left !important; color: #334155; font-size: 10px; font-weight: 600; letter-spacing: .1em; border-bottom: 1px solid #1e293b; white-space: nowrap; width: 130px; }
-.dc { padding: 10px 4px; min-width: 72px; border-bottom: 2px solid #1e293b; }
-.dc.today { background: rgba(52,211,153,.06); border-bottom-color: #34d399; }
-.dc.today .md { color: #34d399; } .dc.today .wd { color: rgba(52,211,153,.5); }
-.dc.sun .md { color: #f87171; } .dc.sun .wd { color: rgba(248,113,113,.5); }
-.dc.sat .md { color: #93c5fd; } .dc.sat .wd { color: rgba(147,197,253,.5); }
-.md { font-size: 13px; font-weight: 700; color: #cbd5e1; }
-.wd { font-size: 10px; color: #475569; }
-tr { border-bottom: 1px solid #0f172a; } tr:last-child { border-bottom: none; }
-.sn { padding: 10px 14px; font-size: 11px; font-weight: 700; white-space: nowrap; border-right: 1px solid #1e293b; text-align: left !important; }
-.cl { padding: 8px 2px; border-left: 1px solid #0f172a; min-width: 72px; }
-.cl.td { background: rgba(52,211,153,.04); }
-.ic { font-size: 18px; line-height: 1.3; }
-.mx { font-size: 12px; font-weight: 700; color: #f87171; line-height: 1.2; }
-.mn { font-size: 12px; color: #60a5fa; line-height: 1.2; }
-.pp { font-size: 10px; line-height: 1.3; margin-top: 2px; }
-.da { color: #334155; font-size: 12px; }
-.lg { margin-top: 12px; display: flex; gap: 16px; flex-wrap: wrap; font-size: 10px; color: #334155; }
-.nt { margin-left: auto; }
-.loading { text-align: center; padding: 60px 20px; }
-.loading .sp { font-size: 32px; margin-bottom: 12px; }
-.loading .lt { font-size: 13px; color: #60a5fa; }
-.loading .ls { font-size: 11px; color: #334155; margin-top: 6px; }
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  min-height: 100vh;
+  padding: 0;
+}
+
+/* ── Header ── */
+.header {
+  background: var(--brown);
+  padding: 24px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--gold);
+}
+.header-left {}
+.brand {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold-lt);
+  margin-bottom: 4px;
+}
+.title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
+  font-weight: 300;
+  color: var(--warm-white);
+  letter-spacing: 0.05em;
+}
+.title em {
+  font-style: italic;
+  color: var(--gold-lt);
+}
+.header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+.upd {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  color: #a08878;
+}
+.rf-btn {
+  background: transparent;
+  border: 1px solid var(--gold);
+  color: var(--gold-lt);
+  font-family: 'Jost', sans-serif;
+  font-weight: 400;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 6px 18px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.rf-btn:hover { background: var(--gold); color: var(--brown); }
+
+/* ── Wrap ── */
+.wrap { max-width: 1100px; margin: 0 auto; padding: 36px 40px; }
+
+/* ── Source badges ── */
+.badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 14px;
+  border: 1px solid var(--rule);
+  background: var(--warm-white);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+.badge-dot { width: 5px; height: 5px; border-radius: 50%; }
+.badge-name { color: var(--brown); font-weight: 500; }
+.badge-days { color: var(--muted); }
+
+/* ── Rule ── */
+.rule {
+  height: 1px;
+  background: linear-gradient(to right, var(--gold), var(--rule), transparent);
+  margin-bottom: 28px;
+}
+
+/* ── Table ── */
+.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+table { border-collapse: collapse; width: 100%; min-width: 820px; }
+
+/* Header row */
+.th-source {
+  padding: 12px 20px;
+  text-align: left;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 400;
+  border-bottom: 2px solid var(--gold);
+  width: 140px;
+  white-space: nowrap;
+  background: var(--warm-white);
+}
+.th-date {
+  padding: 12px 6px;
+  min-width: 76px;
+  text-align: center;
+  border-bottom: 2px solid var(--rule);
+  background: var(--warm-white);
+}
+.th-date.today { border-bottom-color: var(--gold); background: #fdf8f0; }
+.th-date.sun .date-md { color: #8b4a3a; }
+.th-date.sat .date-md { color: var(--rain); }
+
+.date-md {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--brown);
+  line-height: 1.2;
+}
+.th-date.today .date-md { color: var(--gold); }
+.date-wd {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.th-date.today .date-wd { color: var(--gold-lt); }
+
+/* Body rows */
+tr { border-bottom: 1px solid var(--parchment); }
+tr:last-child { border-bottom: none; }
+tr:hover td { background: #fdf9f4; }
+
+.td-source {
+  padding: 14px 20px;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 500;
+  white-space: nowrap;
+  border-right: 1px solid var(--rule);
+  background: var(--warm-white);
+}
+.td-cell {
+  padding: 10px 4px;
+  text-align: center;
+  border-left: 1px solid var(--parchment);
+  min-width: 76px;
+  background: var(--cream);
+  transition: background 0.15s;
+}
+.td-cell.today { background: #fdf8f0; }
+
+.cell-icon { font-size: 20px; line-height: 1.3; }
+.cell-max {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--brown);
+  line-height: 1.2;
+}
+.cell-min {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--tan);
+  line-height: 1.2;
+}
+.cell-pop {
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+  color: var(--muted);
+}
+.cell-pop.hi { color: var(--rain); }
+.cell-dash { color: var(--rule); font-size: 14px; }
+.cell-err { color: var(--rule); font-size: 9px; letter-spacing: 0.1em; }
+
+/* ── Loading ── */
+.loading {
+  text-align: center;
+  padding: 80px 20px;
+  background: var(--warm-white);
+  border: 1px solid var(--rule);
+}
+.loading-icon {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  font-style: italic;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+.loading-text {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--tan);
+}
+.loading-sub {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 8px;
+  font-style: italic;
+}
+
+/* ── Footer legend ── */
+.legend {
+  margin-top: 20px;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  align-items: center;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding-top: 16px;
+  border-top: 1px solid var(--rule);
+}
+.legend-dot {
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+.legend-note { margin-left: auto; font-style: italic; text-transform: none; letter-spacing: 0; }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="hd">
-    <div>
-      <div class="ti">📍 Seoul 10-Day Weather Comparison</div>
-      <div class="su" id="upd">Loading...</div>
-    </div>
-    <button class="rf" id="rfBtn">Refresh</button>
+
+<div class="header">
+  <div class="header-left">
+    <div class="brand">Coach — Production Weather</div>
+    <div class="title">Seoul <em>10-Day</em> Forecast</div>
   </div>
-  <div id="badges" class="bgs"></div>
-  <div id="content">
-    <div class="loading">
-      <div class="sp">🌤️</div>
-      <div class="lt">Fetching weather from 5 sources...</div>
-      <div class="ls">This takes a few seconds on first load.</div>
-    </div>
-  </div>
-  <div class="lg">
-    <span><span style="color:#f87171">■</span> High</span>
-    <span><span style="color:#60a5fa">■</span> Low</span>
-    <span>■ Rain %</span>
-    <span class="nt">KMA available from day 3 onward</span>
+  <div class="header-right">
+    <div class="upd" id="upd">—</div>
+    <button class="rf-btn" id="rfBtn">Refresh</button>
   </div>
 </div>
+
+<div class="wrap">
+  <div id="badges" class="badges"></div>
+  <div class="rule"></div>
+  <div id="content">
+    <div class="loading">
+      <div class="loading-icon">Fetching</div>
+      <div class="loading-text">Retrieving data from 6 sources</div>
+      <div class="loading-sub">This takes a few seconds on first load</div>
+    </div>
+  </div>
+  <div class="legend">
+    <span><span class="legend-dot" style="background:var(--brown)"></span>High</span>
+    <span><span class="legend-dot" style="background:var(--tan)"></span>Low</span>
+    <span><span class="legend-dot" style="background:var(--rain)"></span>Rain %</span>
+    <span class="legend-note">KMA available from day 3 onward</span>
+  </div>
+</div>
+
 <script>
 var WD = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
 function getDates() {
   var dates = [];
-  var utc = Date.now() + new Date().getTimezoneOffset() * 60000;
-  var kst = new Date(utc + 9 * 3600000);
+  var kst = new Date(Date.now() + 9 * 3600000);
   for (var i = 0; i < 10; i++) {
     var d = new Date(kst.getTime() + i * 86400000);
     var y = d.getUTCFullYear();
@@ -90,21 +323,27 @@ function load() {
   document.getElementById('upd').textContent = 'Updating...';
   document.getElementById('badges').innerHTML = '';
   document.getElementById('rfBtn').disabled = true;
-  document.getElementById('content').innerHTML = '<div class="loading"><div class="sp">🌤️</div><div class="lt">Fetching weather from 5 sources...</div><div class="ls">This takes a few seconds on first load.</div></div>';
+  document.getElementById('content').innerHTML =
+    '<div class="loading"><div class="loading-icon">Fetching</div>' +
+    '<div class="loading-text">Retrieving data from 6 sources</div>' +
+    '<div class="loading-sub">This takes a few seconds on first load</div></div>';
 
   fetch('/api/weather')
-    .then(function(res) { return res.json(); })
+    .then(function(r) { return r.json(); })
     .then(function(json) {
-      var sources = json.sources;
-      var updated = new Date(json.updated);
-      var h = String(updated.getUTCHours() + 9).padStart(2,'0');
-      var min = String(updated.getUTCMinutes()).padStart(2,'0');
-      document.getElementById('upd').textContent = 'Updated: ' + h + ':' + min + ' KST';
-      renderBadges(sources);
-      renderTable(sources);
+      var upd = new Date(json.updated);
+      var hh = upd.getUTCHours() + 9;
+      if (hh >= 24) hh -= 24;
+      var mm = String(upd.getUTCMinutes()).padStart(2,'0');
+      document.getElementById('upd').textContent =
+        'Updated ' + String(hh).padStart(2,'0') + ':' + mm + ' KST';
+      renderBadges(json.sources);
+      renderTable(json.sources);
     })
     .catch(function(e) {
-      document.getElementById('content').innerHTML = '<div class="loading"><div class="lt" style="color:#ef4444">Failed to load. Please refresh.</div><div class="ls">' + e.message + '</div></div>';
+      document.getElementById('content').innerHTML =
+        '<div class="loading"><div class="loading-text" style="color:#8b4a3a">Failed to load — please refresh</div>' +
+        '<div class="loading-sub">' + e.message + '</div></div>';
       document.getElementById('upd').textContent = 'Error';
     })
     .finally(function() {
@@ -113,31 +352,43 @@ function load() {
 }
 
 function renderBadges(sources) {
+  var colors = ['#6b8c6b','#6b8fa3','#a07850','#8b6f9e','#c9952a','#5a7a8a'];
   var html = '';
   for (var i = 0; i < sources.length; i++) {
     var s = sources[i];
-    html += '<div class="bg" style="border-color:' + s.color + '30"><div class="dot" style="background:' + (s.error ? '#ef4444' : s.color) + '"></div><span style="color:' + s.color + ';font-weight:600">' + s.name + '</span><span style="color:#334155">&nbsp;' + (s.error ? 'Error' : s.data.length + ' days') + '</span></div>';
+    var c = s.error ? '#c0a090' : colors[i % colors.length];
+    html += '<div class="badge">' +
+      '<div class="badge-dot" style="background:' + c + '"></div>' +
+      '<span class="badge-name" style="color:' + c + '">' + s.name + '</span>' +
+      '<span class="badge-days">' + (s.error ? 'error' : s.data.length + ' days') + '</span>' +
+      '</div>';
   }
   document.getElementById('badges').innerHTML = html;
 }
 
 function renderTable(sources) {
+  var colors = ['#6b8c6b','#6b8fa3','#a07850','#8b6f9e','#c9952a','#5a7a8a'];
   var dates = getDates();
   var today = todayKST();
-  var hdr = '<th class="sc">Source</th>';
+
+  var hdr = '<th class="th-source">Source</th>';
   for (var i = 0; i < dates.length; i++) {
     var d = dates[i];
-    var parts = d.split('-');
-    var dt = new Date(Date.UTC(parseInt(parts[0]), parseInt(parts[1])-1, parseInt(parts[2])));
+    var p = d.split('-');
+    var dt = new Date(Date.UTC(parseInt(p[0]), parseInt(p[1])-1, parseInt(p[2])));
     var md = (dt.getUTCMonth()+1) + '/' + dt.getUTCDate();
     var wd = WD[dt.getUTCDay()];
-    var cls = d===today ? 'today' : dt.getUTCDay()===0 ? 'sun' : dt.getUTCDay()===6 ? 'sat' : '';
-    hdr += '<th class="dc ' + cls + '"><div class="md">' + md + '</div><div class="wd">' + wd + '</div></th>';
+    var cls = d === today ? 'today' : dt.getUTCDay()===0 ? 'sun' : dt.getUTCDay()===6 ? 'sat' : '';
+    hdr += '<th class="th-date ' + cls + '">' +
+      '<div class="date-md">' + md + '</div>' +
+      '<div class="date-wd">' + wd + '</div></th>';
   }
+
   var rows = '';
   for (var si = 0; si < sources.length; si++) {
     var src = sources[si];
-    rows += '<tr><td class="sn" style="color:' + src.color + '">' + src.name + '</td>';
+    var col = colors[si % colors.length];
+    rows += '<tr><td class="td-source" style="color:' + col + '">' + src.name + '</td>';
     for (var di = 0; di < dates.length; di++) {
       var date = dates[di];
       var c = null;
@@ -145,16 +396,30 @@ function renderTable(sources) {
         if (src.data[ci].date === date) { c = src.data[ci]; break; }
       }
       var isToday = date === today;
+      var tdCls = 'td-cell' + (isToday ? ' today' : '');
       if (!c) {
-        rows += '<td class="cl' + (isToday?' td':'') + '"><span class="da">' + (src.error ? 'Err' : '—') + '</span></td>';
+        rows += '<td class="' + tdCls + '">' +
+          '<span class="' + (src.error ? 'cell-err' : 'cell-dash') + '">' +
+          (src.error ? 'n/a' : '—') + '</span></td>';
       } else {
-        var pc = (c.pop||0)>=60 ? '#60a5fa' : (c.pop||0)>=30 ? '#93c5fd' : '#334155';
-        rows += '<td class="cl' + (isToday?' td':'') + '"><div class="ic">' + (c.icon||'🌤️') + '</div><div class="mx">' + (c.max!=null?c.max+'°':'—') + '</div><div class="mn">' + (c.min!=null?c.min+'°':'—') + '</div><div class="pp" style="color:' + pc + '">' + (c.pop||0) + '%</div></td>';
+        var pop = c.pop || 0;
+        var popCls = pop >= 40 ? 'cell-pop hi' : 'cell-pop';
+        rows += '<td class="' + tdCls + '">' +
+          '<div class="cell-icon">' + (c.icon||'🌤️') + '</div>' +
+          '<div class="cell-max">' + (c.max!=null ? c.max+'°' : '—') + '</div>' +
+          '<div class="cell-min">' + (c.min!=null ? c.min+'°' : '—') + '</div>' +
+          '<div class="' + popCls + '">' + pop + '%</div>' +
+          '</td>';
       }
     }
     rows += '</tr>';
   }
-  document.getElementById('content').innerHTML = '<div class="tw"><table><thead><tr>' + hdr + '</tr></thead><tbody>' + rows + '</tbody></table></div>';
+
+  document.getElementById('content').innerHTML =
+    '<div class="table-wrap"><table>' +
+    '<thead><tr>' + hdr + '</tr></thead>' +
+    '<tbody>' + rows + '</tbody>' +
+    '</table></div>';
 }
 
 document.getElementById('rfBtn').addEventListener('click', function() { load(); });
