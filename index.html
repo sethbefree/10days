@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Seoul 10-Day Weather</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #07070f; color: #e2e8f0; font-family: 'DM Mono', 'Courier New', monospace; min-height: 100vh; padding: 20px 14px; }
+.wrap { max-width: 1000px; margin: 0 auto; }
+.hd { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 16px; }
+.ti { font-size: 18px; font-weight: 700; color: #f8fafc; letter-spacing: -.5px; }
+.su { font-size: 11px; color: #475569; margin-top: 4px; }
+.rf { background: transparent; border: 1px solid #1e293b; color: #64748b; border-radius: 6px; padding: 6px 14px; font-size: 11px; cursor: pointer; font-family: inherit; }
+.rf:hover { border-color: #334155; color: #94a3b8; }
+.bgs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+.bg { display: flex; align-items: center; gap: 5px; background: #0f172a; border-radius: 6px; padding: 3px 10px; font-size: 11px; border: 1px solid transparent; }
+.dot { width: 6px; height: 6px; border-radius: 50%; }
+.tw { overflow-x: auto; border-radius: 10px; border: 1px solid #1e293b; background: #0b0b18; }
+table { border-collapse: collapse; width: 100%; min-width: 780px; }
+th, td { text-align: center; }
+.sc { padding: 10px 14px; text-align: left !important; color: #334155; font-size: 10px; font-weight: 600; letter-spacing: .1em; border-bottom: 1px solid #1e293b; white-space: nowrap; width: 130px; }
+.dc { padding: 10px 4px; min-width: 72px; border-bottom: 2px solid #1e293b; }
+.dc.today { background: rgba(52,211,153,.06); border-bottom-color: #34d399; }
+.dc.today .md { color: #34d399; } .dc.today .wd { color: rgba(52,211,153,.5); }
+.dc.sun .md { color: #f87171; } .dc.sun .wd { color: rgba(248,113,113,.5); }
+.dc.sat .md { color: #93c5fd; } .dc.sat .wd { color: rgba(147,197,253,.5); }
+.md { font-size: 13px; font-weight: 700; color: #cbd5e1; }
+.wd { font-size: 10px; color: #475569; }
+tr { border-bottom: 1px solid #0f172a; } tr:last-child { border-bottom: none; }
+.sn { padding: 10px 14px; font-size: 11px; font-weight: 700; white-space: nowrap; border-right: 1px solid #1e293b; text-align: left !important; }
+.cl { padding: 8px 2px; border-left: 1px solid #0f172a; min-width: 72px; }
+.cl.td { background: rgba(52,211,153,.04); }
+.ic { font-size: 18px; line-height: 1.3; }
+.mx { font-size: 12px; font-weight: 700; color: #f87171; line-height: 1.2; }
+.mn { font-size: 12px; color: #60a5fa; line-height: 1.2; }
+.pp { font-size: 10px; line-height: 1.3; margin-top: 2px; }
+.da { color: #1e293b; font-size: 12px; }
+.lg { margin-top: 12px; display: flex; gap: 16px; flex-wrap: wrap; font-size: 10px; color: #334155; }
+.nt { margin-left: auto; }
+.loading { text-align: center; padding: 60px 20px; }
+.loading .sp { font-size: 32px; margin-bottom: 12px; }
+.loading .lt { font-size: 13px; color: #60a5fa; }
+.loading .ls { font-size: 11px; color: #334155; margin-top: 6px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hd">
+    <div>
+      <div class="ti">📍 Seoul 10-Day Weather Comparison</div>
+      <div class="su" id="upd">Loading...</div>
+    </div>
+    <button class="rf" onclick="load()">Refresh</button>
+  </div>
+  <div id="badges" class="bgs"></div>
+  <div id="content">
+    <div class="loading">
+      <div class="sp">🌤️</div>
+      <div class="lt">Fetching weather from 5 sources...</div>
+      <div class="ls">This takes a few seconds on first load.</div>
+    </div>
+  </div>
+  <div class="lg">
+    <span><span style="color:#f87171">■</span> High</span>
+    <span><span style="color:#60a5fa">■</span> Low</span>
+    <span>■ Rain %</span>
+    <span class="nt">KMA available from day 3 onward</span>
+  </div>
+</div>
+
+<script>
+const WD = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+function todayKST() {
+  return new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Seoul' });
+}
+
+function getDates() {
+  const today = new Date(todayKST() + 'T00:00:00');
+  return Array.from({length:10}, (_,i) => {
+    const d = new Date(today);
+    d.setDate(today.getDate() + i);
+    return d.toISOString().split('T')[0];
+  });
+}
+
+async function load() {
+  document.getElementById('upd').textContent = 'Updating...';
+  document.getElementById('badges').innerHTML = '';
+  document.getElementById('content').innerHTML = `<div class="loading"><div class="sp">🌤️</div><div class="lt">Fetching weather from 5 sources...</div><div class="ls">This takes a few seconds on first load.</div></div>`;
+
+  try {
+    const res = await fetch('/api/weather');
+    const { sources, updated } = await res.json();
+
+    const upd = new Date(updated);
+    document.getElementById('upd').textContent = 'Updated: ' + upd.toLocaleTimeString('en-US', { timeZone: 'Asia/Seoul', hour: '2-digit', minute: '2-digit' }) + ' KST';
+
+    renderBadges(sources);
+    renderTable(sources);
+  } catch(e) {
+    document.getElementById('content').innerHTML = `<div class="loading"><div class="lt" style="color:#ef4444">Failed to load. Please refresh.</div><div class="ls">${e.message}</div></div>`;
+    document.getElementById('upd').textContent = 'Error';
+  }
+}
+
+function renderBadges(sources) {
+  document.getElementById('badges').innerHTML = sources.map(s => `
+    <div class="bg" style="border-color:${s.color}30">
+      <div class="dot" style="background:${s.error ? '#ef4444' : s.color}"></div>
+      <span style="color:${s.color};font-weight:600">${s.name}</span>
+      <span style="color:#334155">${s.error ? 'Error' : s.data.length + ' days'}</span>
+    </div>`).join('');
+}
+
+function renderTable(sources) {
+  const dates = getDates();
+  const today = todayKST();
+
+  let hdr = '<th class="sc">Source</th>';
+  dates.forEach(d => {
+    const dt = new Date(d + 'T00:00:00');
+    const md = `${dt.getMonth()+1}/${dt.getDate()}`;
+    const wd = WD[dt.getDay()];
+    const cls = d===today ? 'today' : dt.getDay()===0 ? 'sun' : dt.getDay()===6 ? 'sat' : '';
+    hdr += `<th class="dc ${cls}"><div class="md">${md}</div><div class="wd">${wd}</div></th>`;
+  });
+
+  let rows = '';
+  sources.forEach(src => {
+    rows += `<tr><td class="sn" style="color:${src.color}">${src.name}</td>`;
+    dates.forEach(d => {
+      const c = (src.data||[]).find(x => x.date === d);
+      if(!c) {
+        rows += `<td class="cl"><span class="da">${src.error ? 'Error' : '—'}</span></td>`;
+      } else {
+        const pc = (c.pop||0)>=60 ? '#60a5fa' : (c.pop||0)>=30 ? '#93c5fd' : '#334155';
+        rows += `<td class="cl${d===today?' td':''}">
+          <div class="ic">${c.icon||'🌤️'}</div>
+          <div class="mx">${c.max!=null ? c.max+'°' : '—'}</div>
+          <div class="mn">${c.min!=null ? c.min+'°' : '—'}</div>
+          <div class="pp" style="color:${pc}">${c.pop??0}%</div>
+        </td>`;
+      }
+    });
+    rows += '</tr>';
+  });
+
+  document.getElementById('content').innerHTML = `
+    <div class="tw">
+      <table>
+        <thead><tr>${hdr}</tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+}
+
+load();
+</script>
+
+</body>
+</html>
