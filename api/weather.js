@@ -22,7 +22,7 @@ function getKMABase() {
 
 function wmoIcon(c) {
   if(c===0) return'☀️'; if(c<=2) return'🌤️'; if(c===3) return'☁️';
-  if(c<=48) return'🌫️'; if(c<=57) return'🌦️'; if(c<=67) return'🌧️';
+  if(c<=48) return'🌫'; if(c<=57) return'🌦️'; if(c<=67) return'🌧️';
   if(c<=77) return'🌨️'; if(c<=82) return'🌦️'; if(c<=86) return'🌨️';
   if(c<=99) return'⛈️'; return'❓';
 }
@@ -40,13 +40,13 @@ function owmIcon(id) {
 function wapiIcon(t) {
   t=(t||'').toLowerCase();
   if(t.includes('thunder')) return'⛈️'; if(t.includes('snow')||t.includes('blizzard')) return'🌨️';
-  if(t.includes('rain')||t.includes('drizzle')) return'🌧️'; if(t.includes('fog')||t.includes('mist')) return'🌫️';
+  if(t.includes('rain')||t.includes('drizzle')) return'🌧'; if(t.includes('fog')||t.includes('mist')) return'🌫️';
   if(t.includes('overcast')) return'☁️'; if(t.includes('cloud')) return'⛅';
   if(t.includes('sunny')||t.includes('clear')) return'☀️'; return'🌤️';
 }
 function kmaIcon(c) {
   if(!c) return'❓';
-  if(c.includes('맑음')) return'☀️'; if(c.includes('구름조금')) return'🌤️';
+  if(c.includes('맑음')) return'☀'; if(c.includes('구름조금')) return'🌤️';
   if(c.includes('구름많음')) return'⛅'; if(c.includes('비')) return'🌧️';
   if(c.includes('눈')) return'🌨️'; if(c.includes('흐림')) return'☁️'; return'🌤️';
 }
@@ -75,16 +75,15 @@ async function fetchWeatherbit() {
 async function fetchKMA() {
   const base = getKMABase();
   const B = 'https://apis.data.go.kr/1360000/MidFcstInfoService';
-  const key = encodeURIComponent(KMA_KEY);
   const results = await Promise.all([
-    fetch(B+'/getMidLandFcst?serviceKey='+key+'&numOfRows=10&pageNo=1&regId=11B00000&tmFc='+base+'&dataType=JSON'),
-    fetch(B+'/getMidTa?serviceKey='+key+'&numOfRows=10&pageNo=1&regId=11H10501&tmFc='+base+'&dataType=JSON'),
+    fetch(B+'/getMidLandFcst?serviceKey='+KMA_KEY+'&numOfRows=10&pageNo=1&regId=11B00000&tmFc='+base+'&dataType=JSON'),
+    fetch(B+'/getMidTa?serviceKey='+KMA_KEY+'&numOfRows=10&pageNo=1&regId=11H10501&tmFc='+base+'&dataType=JSON'),
   ]);
   const lo = await results[0].json();
   const te = await results[1].json();
   const li = lo.response&&lo.response.body&&lo.response.body.items&&lo.response.body.items.item&&lo.response.body.items.item[0];
   const ti = te.response&&te.response.body&&te.response.body.items&&te.response.body.items.item&&te.response.body.items.item[0];
-  if(!li||!ti) throw new Error('KMA no data (base='+base+')');
+  if(!li||!ti) throw new Error('KMA no data base='+base);
   const data = [];
   for(let i=3;i<=10;i++){
     const pop = Math.max(Number(li['rnSt'+i+'Am']||li['rnSt'+i]||0), Number(li['rnSt'+i+'Pm']||0));
