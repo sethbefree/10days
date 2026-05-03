@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Seoul Weather — Production</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
@@ -20,244 +20,129 @@
   --rain: #6b8fa3;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; background: var(--cream); font-family: 'Jost', sans-serif; font-weight: 300; }
 
-html, body {
-  height: 100%;
-  overflow: hidden;
-  background: var(--cream);
-  font-family: 'Jost', sans-serif;
-  font-weight: 300;
-}
+.layout { display: flex; flex-direction: column; height: 100vh; height: 100dvh; }
 
-/* 전체를 100vh로 분할 */
-.layout {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  height: 100dvh;
-}
-
-/* ── Header ── */
+/* Header */
 .header {
   flex-shrink: 0;
   background: var(--brown);
-  padding: 10px 16px;
+  padding: 8px 14px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 2px solid var(--gold);
-  gap: 12px;
+  gap: 10px;
 }
-.brand {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 9px;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: var(--gold-lt);
-  margin-bottom: 2px;
-}
-.title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 18px;
-  font-weight: 300;
-  color: #faf7f2;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-}
+.brand { font-family: 'Cormorant Garamond', serif; font-size: 8px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold-lt); margin-bottom: 1px; }
+.title { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-weight: 300; color: #faf7f2; letter-spacing: 0.04em; white-space: nowrap; }
 .title em { font-style: italic; color: var(--gold-lt); }
-.header-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
-.upd { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #a08878; white-space: nowrap; }
+.header-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.upd { font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #a08878; white-space: nowrap; }
 .rf-btn {
-  background: transparent;
-  border: 1px solid var(--gold);
-  color: var(--gold-lt);
-  font-family: 'Jost', sans-serif;
-  font-size: 9px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  padding: 5px 12px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: all 0.2s;
+  background: transparent; border: 1px solid var(--gold); color: var(--gold-lt);
+  font-family: 'Jost', sans-serif; font-size: 8px; letter-spacing: 0.18em;
+  text-transform: uppercase; padding: 4px 10px; cursor: pointer; white-space: nowrap;
 }
 .rf-btn:active { background: var(--gold); color: var(--brown); }
 
-/* ── Badges ── */
+/* Badges */
 .badges-wrap {
-  flex-shrink: 0;
-  padding: 8px 16px;
-  display: flex;
-  gap: 5px;
-  flex-wrap: wrap;
-  background: var(--warm-white);
-  border-bottom: 1px solid var(--rule);
+  flex-shrink: 0; padding: 5px 14px;
+  display: flex; gap: 4px; flex-wrap: wrap;
+  background: var(--warm-white); border-bottom: 1px solid var(--rule);
 }
-.badge {
-  display: flex; align-items: center; gap: 5px;
-  padding: 3px 8px;
-  border: 1px solid var(--rule);
-  font-size: 8px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
+.badge { display: flex; align-items: center; gap: 4px; padding: 2px 7px; border: 1px solid var(--rule); font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; }
 .badge-dot { width: 4px; height: 4px; border-radius: 50%; flex-shrink: 0; }
 .badge-days { color: var(--muted); }
 
-/* ── Table 영역: 남은 높이 전부 ── */
-.table-outer {
-  flex: 1;
-  overflow: hidden;
-  position: relative;
-}
+/* Table area */
+.table-outer { flex: 1; overflow: hidden; position: relative; min-height: 0; }
 .table-outer::after {
-  content: '';
-  position: absolute;
-  top: 0; right: 0; bottom: 0;
-  width: 24px;
-  background: linear-gradient(to right, transparent, var(--cream));
-  pointer-events: none;
+  content: ''; position: absolute; top: 0; right: 0; bottom: 0; width: 20px;
+  background: linear-gradient(to right, transparent, var(--cream)); pointer-events: none;
 }
-.table-wrap {
-  width: 100%;
-  height: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
-}
-table {
-  border-collapse: collapse;
-  height: 100%;
-  min-width: 700px;
-  width: 100%;
-  table-layout: fixed;
-}
+.table-wrap { width: 100%; height: 100%; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; }
 
-/* 헤더행 */
-thead tr { height: 44px; }
+table { border-collapse: collapse; height: 100%; min-width: 600px; width: 100%; table-layout: fixed; }
+thead tr { height: 40px; }
+
 .th-source {
-  position: sticky; left: 0; z-index: 3;
-  background: var(--warm-white);
-  padding: 0 10px;
-  text-align: left;
-  font-size: 8px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--muted);
-  font-weight: 400;
-  border-bottom: 2px solid var(--gold);
-  border-right: 1px solid var(--rule);
-  white-space: nowrap;
-  width: 80px;
+  position: sticky; left: 0; z-index: 3; background: var(--warm-white);
+  padding: 0 8px; text-align: left; font-size: 7px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--muted); font-weight: 400;
+  border-bottom: 2px solid var(--gold); border-right: 1px solid var(--rule);
+  white-space: nowrap; width: 52px;
 }
-.th-date {
-  text-align: center;
-  border-bottom: 2px solid var(--rule);
-  background: var(--warm-white);
-  padding: 0 2px;
-}
+.th-date { text-align: center; border-bottom: 2px solid var(--rule); background: var(--warm-white); padding: 0 1px; }
 .th-date.today { border-bottom-color: var(--gold); background: #fdf8f0; }
 .th-date.sun .date-md { color: #8b4a3a; }
 .th-date.sat .date-md { color: var(--rain); }
-.date-md {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 14px;
-  font-weight: 400;
-  color: var(--brown);
-  line-height: 1.1;
-}
+.date-md { font-family: 'Cormorant Garamond', serif; font-size: 13px; font-weight: 400; color: var(--brown); line-height: 1.1; }
 .th-date.today .date-md { color: var(--gold); }
-.date-wd {
-  font-size: 7px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
+.date-wd { font-size: 7px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
 .th-date.today .date-wd { color: var(--gold-lt); }
 
-/* 바디행: 남은 높이를 6개 행으로 균등 분할 */
-tbody tr {
-  border-bottom: 1px solid var(--parchment);
-  height: calc((100% - 44px) / 6);
-}
+tbody tr { border-bottom: 1px solid var(--parchment); }
 tbody tr:last-child { border-bottom: none; }
 
 .td-source {
-  position: sticky; left: 0; z-index: 2;
-  background: var(--warm-white);
-  padding: 0 10px;
-  font-size: 8px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  font-weight: 500;
-  white-space: nowrap;
-  border-right: 1px solid var(--rule);
-  vertical-align: middle;
+  position: sticky; left: 0; z-index: 2; background: var(--warm-white);
+  padding: 0 8px; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase;
+  font-weight: 500; white-space: nowrap; border-right: 1px solid var(--rule);
+  vertical-align: middle; width: 52px;
 }
-.td-cell {
-  text-align: center;
-  border-left: 1px solid var(--parchment);
-  background: var(--cream);
-  vertical-align: middle;
-  padding: 2px 1px;
-}
+.td-cell { text-align: center; border-left: 1px solid var(--parchment); background: var(--cream); vertical-align: middle; padding: 1px; }
 .td-cell.today { background: #fdf8f0; }
 
-.cell-icon { font-size: 16px; line-height: 1.1; }
-.cell-max {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--brown);
-  line-height: 1.1;
-}
-.cell-min {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 11px;
-  font-weight: 300;
-  color: var(--tan);
-  line-height: 1.1;
-}
+.cell-icon { font-size: 15px; line-height: 1.1; }
+.cell-max { font-family: 'Cormorant Garamond', serif; font-size: 12px; font-weight: 600; color: var(--brown); line-height: 1.1; }
+.cell-min { font-family: 'Cormorant Garamond', serif; font-size: 11px; font-weight: 300; color: var(--tan); line-height: 1.1; }
 .cell-pop { font-size: 8px; color: var(--muted); }
 .cell-pop.hi { color: var(--rain); font-weight: 500; }
-.cell-dash { color: var(--rule); font-size: 12px; }
+.cell-dash { color: var(--rule); font-size: 11px; }
 .cell-err { color: var(--rule); font-size: 7px; }
 
-/* ── 로딩 ── */
-.loading {
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  height: 100%;
-  background: var(--warm-white);
-}
-.loading-icon {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 24px; font-style: italic;
-  color: var(--gold); margin-bottom: 12px;
-}
-.loading-text { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--tan); }
-.loading-sub { font-size: 10px; color: var(--muted); margin-top: 6px; font-style: italic; }
+/* Loading */
+.loading { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: var(--warm-white); }
+.loading-icon { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-style: italic; color: var(--gold); margin-bottom: 10px; }
+.loading-text { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--tan); }
+.loading-sub { font-size: 9px; color: var(--muted); margin-top: 5px; font-style: italic; }
 
-/* ── 하단 범례 ── */
+/* Legend */
 .legend {
-  flex-shrink: 0;
-  padding: 6px 16px;
-  display: flex;
-  gap: 14px;
-  align-items: center;
-  font-size: 8px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--muted);
-  border-top: 1px solid var(--rule);
-  background: var(--warm-white);
+  flex-shrink: 0; padding: 5px 14px;
+  display: flex; gap: 12px; align-items: center;
+  font-size: 7px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+  border-top: 1px solid var(--rule); background: var(--warm-white);
 }
-.legend-dot { display: inline-block; width: 4px; height: 4px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
-.legend-note { margin-left: auto; font-style: italic; text-transform: none; letter-spacing: 0; font-size: 9px; }
+.legend-dot { display: inline-block; width: 4px; height: 4px; border-radius: 50%; margin-right: 3px; vertical-align: middle; }
+.legend-note { margin-left: auto; font-style: italic; text-transform: none; letter-spacing: 0; font-size: 8px; }
+
+/* Desktop */
+@media (min-width: 768px) {
+  .header { padding: 12px 32px; }
+  .title { font-size: 22px; }
+  .brand { font-size: 10px; }
+  .badges-wrap { padding: 8px 32px; gap: 6px; }
+  .badge { font-size: 9px; padding: 3px 10px; }
+  .th-source { width: 70px; font-size: 8px; }
+  .td-source { width: 70px; font-size: 9px; }
+  .th-date { padding: 0 2px; }
+  .date-md { font-size: 15px; }
+  .date-wd { font-size: 8px; }
+  .cell-icon { font-size: 18px; }
+  .cell-max { font-size: 14px; }
+  .cell-min { font-size: 12px; }
+  .cell-pop { font-size: 9px; }
+  .legend { padding: 6px 32px; font-size: 8px; }
+  .table-outer::after { display: none; }
+}
 </style>
 </head>
 <body>
 <div class="layout">
-
   <div class="header">
     <div>
       <div class="brand">Coach — Production Weather</div>
@@ -284,87 +169,80 @@ tbody tr:last-child { border-bottom: none; }
   <div class="legend">
     <span><span class="legend-dot" style="background:var(--brown)"></span>High</span>
     <span><span class="legend-dot" style="background:var(--tan)"></span>Low</span>
-    <span><span class="legend-dot" style="background:var(--rain)"></span>Rain %</span>
+    <span><span class="legend-dot" style="background:var(--rain)"></span>Rain%</span>
     <span class="legend-note">KMA from day 3 onward</span>
   </div>
-
 </div>
-<script>
-var WD = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
-function getDates() {
-  var dates = [];
-  var kst = new Date(Date.now() + 9 * 3600000);
-  for (var i = 0; i < 10; i++) {
-    var d = new Date(kst.getTime() + i * 86400000);
+<script>
+var WD=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+function getDates(){
+  var dates=[], kst=new Date(Date.now()+9*3600000);
+  for(var i=0;i<10;i++){
+    var d=new Date(kst.getTime()+i*86400000);
     dates.push(d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0')+'-'+String(d.getUTCDate()).padStart(2,'0'));
   }
   return dates;
 }
-function todayKST() { return getDates()[0]; }
+function todayKST(){ return getDates()[0]; }
 
-function load() {
-  document.getElementById('upd').textContent = 'Updating...';
-  document.getElementById('badges').innerHTML = '';
-  document.getElementById('rfBtn').disabled = true;
-  document.getElementById('content').innerHTML =
+function load(){
+  document.getElementById('upd').textContent='Updating...';
+  document.getElementById('badges').innerHTML='';
+  document.getElementById('rfBtn').disabled=true;
+  document.getElementById('content').innerHTML=
     '<div class="loading"><div class="loading-icon">Fetching</div>'+
     '<div class="loading-text">Retrieving data from 6 sources</div>'+
     '<div class="loading-sub">This takes a few seconds on first load</div></div>';
-
   fetch('/api/weather')
-    .then(function(r){ return r.json(); })
+    .then(function(r){return r.json();})
     .then(function(json){
-      var upd = new Date(json.updated);
-      var hh = upd.getUTCHours()+9; if(hh>=24) hh-=24;
-      document.getElementById('upd').textContent = 'Updated '+String(hh).padStart(2,'0')+':'+String(upd.getUTCMinutes()).padStart(2,'0')+' KST';
+      var upd=new Date(json.updated);
+      var hh=upd.getUTCHours()+9; if(hh>=24)hh-=24;
+      document.getElementById('upd').textContent='Updated '+String(hh).padStart(2,'0')+':'+String(upd.getUTCMinutes()).padStart(2,'0')+' KST';
       renderBadges(json.sources);
       renderTable(json.sources);
     })
     .catch(function(e){
-      document.getElementById('content').innerHTML =
+      document.getElementById('content').innerHTML=
         '<div class="loading"><div class="loading-text" style="color:#8b4a3a">Failed to load</div>'+
         '<div class="loading-sub">'+e.message+'</div></div>';
-      document.getElementById('upd').textContent = 'Error';
+      document.getElementById('upd').textContent='Error';
     })
-    .finally(function(){ document.getElementById('rfBtn').disabled = false; });
+    .finally(function(){document.getElementById('rfBtn').disabled=false;});
 }
 
-function renderBadges(sources) {
-  var colors = ['#6b8c6b','#6b8fa3','#a07850','#8b6f9e','#c9952a','#5a7a8a'];
-  var html = '';
+function renderBadges(sources){
+  var colors=['#6b8c6b','#6b8fa3','#a07850','#8b6f9e','#c9952a','#5a7a8a'];
+  var html='';
   for(var i=0;i<sources.length;i++){
-    var s=sources[i], c=s.error?'#c0a090':colors[i%colors.length];
+    var s=sources[i],c=s.error?'#c0a090':colors[i%colors.length];
     html+='<div class="badge"><div class="badge-dot" style="background:'+c+'"></div>'+
       '<span style="color:'+c+';font-weight:500">'+s.name+'</span>'+
       '<span class="badge-days">'+(s.error?'err':s.data.length+'d')+'</span></div>';
   }
-  document.getElementById('badges').innerHTML = html;
+  document.getElementById('badges').innerHTML=html;
 }
 
-function renderTable(sources) {
-  var colors = ['#6b8c6b','#6b8fa3','#a07850','#8b6f9e','#c9952a','#5a7a8a'];
-  var dates = getDates(), today = todayKST();
-
-  var hdr = '<th class="th-source">Source</th>';
+function renderTable(sources){
+  var colors=['#6b8c6b','#6b8fa3','#a07850','#8b6f9e','#c9952a','#5a7a8a'];
+  var dates=getDates(),today=todayKST();
+  var hdr='<th class="th-source"></th>';
   for(var i=0;i<dates.length;i++){
-    var d=dates[i], p=d.split('-');
+    var d=dates[i],p=d.split('-');
     var dt=new Date(Date.UTC(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2])));
     var cls=d===today?'today':dt.getUTCDay()===0?'sun':dt.getUTCDay()===6?'sat':'';
     hdr+='<th class="th-date '+cls+'">'+
       '<div class="date-md">'+(dt.getUTCMonth()+1)+'/'+dt.getUTCDate()+'</div>'+
       '<div class="date-wd">'+WD[dt.getUTCDay()]+'</div></th>';
   }
-
-  var rows = '';
+  var rows='';
   for(var si=0;si<sources.length;si++){
-    var src=sources[si], col=colors[si%colors.length];
+    var src=sources[si],col=colors[si%colors.length];
     rows+='<tr><td class="td-source" style="color:'+col+'">'+src.name+'</td>';
     for(var di=0;di<dates.length;di++){
-      var date=dates[di], c=null;
-      for(var ci=0;ci<(src.data||[]).length;ci++){
-        if(src.data[ci].date===date){c=src.data[ci];break;}
-      }
+      var date=dates[di],c=null;
+      for(var ci=0;ci<(src.data||[]).length;ci++){if(src.data[ci].date===date){c=src.data[ci];break;}}
       var tdCls='td-cell'+(date===today?' today':'');
       if(!c){
         rows+='<td class="'+tdCls+'"><span class="'+(src.error?'cell-err':'cell-dash')+'">'+(src.error?'n/a':'—')+'</span></td>';
@@ -379,12 +257,11 @@ function renderTable(sources) {
     }
     rows+='</tr>';
   }
-
-  document.getElementById('content').innerHTML =
+  document.getElementById('content').innerHTML=
     '<table><thead><tr>'+hdr+'</tr></thead><tbody>'+rows+'</tbody></table>';
 }
 
-document.getElementById('rfBtn').addEventListener('click', function(){ load(); });
+document.getElementById('rfBtn').addEventListener('click',function(){load();});
 load();
 </script>
 </body>
