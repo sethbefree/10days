@@ -146,13 +146,13 @@ module.exports = async function(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Cache-Control', 's-maxage=1800, stale-while-revalidate');
 
-    const SOURCES = [
-    { name: 'Meteo',   color: '#34d399', fn: fetchOpenMeteo  },
-    { name: 'W.Bit',   color: '#60a5fa', fn: fetchWeatherbit  },
-    { name: 'OWM',     color: '#fbbf24', fn: fetchOWM         },
-    { name: 'W.API',   color: '#a78bfa', fn: fetchWeatherAPI  },
-    { name: 'Tmrw',    color: '#fb923c', fn: fetchTomorrow    },
-    { name: 'WWO',     color: '#38bdf8', fn: fetchWWO         },
+      const SOURCES = [
+    { name: 'Meteo',  color: '#34d399', fn: fetchOpenMeteo  },
+    { name: 'W.Bit',  color: '#60a5fa', fn: fetchWeatherbit  },
+    { name: 'W.API',  color: '#a78bfa', fn: fetchWeatherAPI  },
+    { name: 'WWO',    color: '#38bdf8', fn: fetchWWO         },
+    { name: 'OWM',    color: '#fbbf24', fn: fetchOWM         },
+    { name: 'Tmrw',   color: '#fb923c', fn: fetchTomorrow    },
   ];
 
   const results = await Promise.allSettled(SOURCES.map(function(s){ return s.fn(); }));
