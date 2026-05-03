@@ -214,12 +214,23 @@ function load(){
 
 function renderBadges(sources){
   var colors=['#6b8c6b','#6b8fa3','#a07850','#8b6f9e','#c9952a','#5a7a8a'];
+  var urls=[
+    'https://open-meteo.com/en/docs',
+    'https://www.weatherbit.io',
+    'https://openweathermap.org/city/1835848',
+    'https://www.weatherapi.com',
+    'https://www.tomorrow.io',
+    'https://www.worldweatheronline.com/seoul-weather/seoul/kr.aspx'
+  ];
   var html='';
   for(var i=0;i<sources.length;i++){
     var s=sources[i],c=s.error?'#c0a090':colors[i%colors.length];
-    html+='<div class="badge"><div class="badge-dot" style="background:'+c+'"></div>'+
+    html+='<a href="'+urls[i]+'" target="_blank" rel="noopener" class="badge" style="text-decoration:none">'+
+      '<div class="badge-dot" style="background:'+c+'"></div>'+
       '<span style="color:'+c+';font-weight:500">'+s.name+'</span>'+
-      '<span class="badge-days">'+(s.error?'err':s.data.length+'d')+'</span></div>';
+      '<span class="badge-days">'+(s.error?'err':s.data.length+'d')+'</span>'+
+      '<span style="color:var(--rule);font-size:7px;margin-left:1px">↗</span>'+
+      '</a>';
   }
   document.getElementById('badges').innerHTML=html;
 }
