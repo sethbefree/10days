@@ -25,16 +25,10 @@ html, body { height: 100%; overflow: hidden; background: var(--cream); font-fami
 
 .layout { display: flex; flex-direction: column; height: 100vh; height: 100dvh; }
 
-/* Header */
 .header {
-  flex-shrink: 0;
-  background: var(--brown);
-  padding: 8px 14px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 2px solid var(--gold);
-  gap: 10px;
+  flex-shrink: 0; background: var(--brown); padding: 8px 14px;
+  display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 2px solid var(--gold); gap: 10px;
 }
 .brand { font-family: 'Cormorant Garamond', serif; font-size: 8px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold-lt); margin-bottom: 1px; }
 .title { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-weight: 300; color: #faf7f2; letter-spacing: 0.04em; white-space: nowrap; }
@@ -48,38 +42,24 @@ html, body { height: 100%; overflow: hidden; background: var(--cream); font-fami
 }
 .rf-btn:active { background: var(--gold); color: var(--brown); }
 
-/* Bookmark hint */
 .bookmark-hint {
-  flex-shrink: 0;
-  padding: 5px 14px;
-  background: #fdf8f0;
-  border-bottom: 1px solid var(--gold-lt);
-  font-size: 9px;
-  color: var(--tan);
-  letter-spacing: 0.04em;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
+  flex-shrink: 0; padding: 5px 14px; background: #fdf8f0;
+  border-bottom: 1px solid var(--gold-lt); font-size: 9px; color: var(--tan);
+  letter-spacing: 0.04em; display: flex; align-items: center; justify-content: space-between; gap: 8px;
 }
 .bookmark-hint span { cursor: pointer; opacity: 0.5; flex-shrink: 0; font-size: 11px; }
 
-/* Badges */
 .badges-wrap {
-  flex-shrink: 0; padding: 5px 14px;
-  display: flex; gap: 4px; flex-wrap: wrap;
+  flex-shrink: 0; padding: 5px 14px; display: flex; gap: 4px; flex-wrap: wrap;
   background: var(--warm-white); border-bottom: 1px solid var(--rule);
 }
 .badge {
-  display: flex; align-items: center; gap: 4px;
-  padding: 2px 7px; border: 1px solid var(--rule);
-  font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase;
-  text-decoration: none;
+  display: flex; align-items: center; gap: 4px; padding: 2px 7px;
+  border: 1px solid var(--rule); font-size: 8px; letter-spacing: 0.08em;
+  text-transform: uppercase; text-decoration: none;
 }
 .badge-dot { width: 4px; height: 4px; border-radius: 50%; flex-shrink: 0; }
-.badge-days { color: var(--muted); }
 
-/* Table area */
 .table-outer { flex: 1; overflow: hidden; position: relative; min-height: 0; }
 .table-outer::after {
   content: ''; position: absolute; top: 0; right: 0; bottom: 0; width: 20px;
@@ -88,18 +68,18 @@ html, body { height: 100%; overflow: hidden; background: var(--cream); font-fami
 .table-wrap { width: 100%; height: 100%; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; }
 
 table { border-collapse: collapse; height: 100%; min-width: 600px; width: 100%; table-layout: fixed; }
-thead tr { height: 40px; }
+thead tr { height: auto; }
 
 .th-source {
   position: sticky; left: 0; z-index: 3; background: var(--warm-white);
   padding: 0 8px; text-align: left; font-size: 7px; letter-spacing: 0.2em;
   text-transform: uppercase; color: var(--muted); font-weight: 400;
   border-bottom: 2px solid var(--gold); border-right: 1px solid var(--rule);
-  white-space: nowrap; width: 52px;
+  white-space: nowrap; width: 52px; vertical-align: bottom;
 }
 .th-date {
   text-align: center; border-bottom: 2px solid var(--rule);
-  background: var(--warm-white); padding: 0 1px;
+  background: var(--warm-white); padding: 4px 1px; vertical-align: top;
 }
 .th-date.today { border-bottom-color: var(--gold); background: #fdf8f0; }
 .th-date.shoot { background: var(--shoot); border-bottom-color: var(--gold); }
@@ -109,10 +89,10 @@ thead tr { height: 40px; }
 
 .date-md { font-family: 'Cormorant Garamond', serif; font-size: 13px; font-weight: 400; color: var(--brown); line-height: 1.1; }
 .th-date.today .date-md { color: var(--gold); }
-.th-date.shoot .date-md { color: var(--brown); font-weight: 600; }
+.th-date.shoot .date-md { font-weight: 600; }
 .date-wd { font-size: 7px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
 .th-date.today .date-wd { color: var(--gold-lt); }
-.shoot-label { font-size: 7px; color: var(--gold); letter-spacing: 0; margin-top: 1px; }
+.date-schedule { font-size: 7px; color: var(--gold); letter-spacing: 0.03em; margin-top: 2px; line-height: 1.3; }
 
 tbody tr { border-bottom: 1px solid var(--parchment); }
 tbody tr:last-child { border-bottom: none; }
@@ -123,10 +103,7 @@ tbody tr:last-child { border-bottom: none; }
   font-weight: 500; white-space: nowrap; border-right: 1px solid var(--rule);
   vertical-align: middle; width: 52px;
 }
-.td-cell {
-  text-align: center; border-left: 1px solid var(--parchment);
-  background: var(--cream); vertical-align: middle; padding: 1px;
-}
+.td-cell { text-align: center; border-left: 1px solid var(--parchment); background: var(--cream); vertical-align: middle; padding: 2px 1px; }
 .td-cell.today { background: #fdf8f0; }
 .td-cell.shoot { background: var(--shoot); }
 .td-cell.today.shoot { background: #fdecd6; }
@@ -134,23 +111,22 @@ tbody tr:last-child { border-bottom: none; }
 .cell-icon { font-size: 15px; line-height: 1.1; }
 .cell-max { font-family: 'Cormorant Garamond', serif; font-size: 12px; font-weight: 600; color: var(--brown); line-height: 1.1; }
 .cell-min { font-family: 'Cormorant Garamond', serif; font-size: 11px; font-weight: 300; color: var(--tan); line-height: 1.1; }
-.cell-pop { font-size: 8px; color: var(--muted); }
-.cell-pop.hi { color: var(--rain); font-weight: 500; }
+.cell-pop { font-size: 8px; color: var(--muted); font-weight: 400; }
+.cell-pop.p40 { color: var(--rain); font-weight: 500; }
+.cell-pop.p60 { color: #b84040; font-weight: 700; font-size: 9px; }
+.cell-pop.p80 { color: #8b2020; font-weight: 700; font-size: 10px; }
 .cell-dash { color: var(--rule); font-size: 11px; }
 .cell-err { color: var(--rule); font-size: 7px; }
 
-/* Loading */
 .loading { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: var(--warm-white); }
 .loading-icon { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-style: italic; color: var(--gold); margin-bottom: 10px; }
 .loading-text { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--tan); }
 .loading-sub { font-size: 9px; color: var(--muted); margin-top: 5px; font-style: italic; }
 
-/* Legend */
 .legend {
-  flex-shrink: 0; padding: 5px 14px;
-  display: flex; gap: 12px; align-items: center;
+  flex-shrink: 0; padding: 5px 14px; display: flex; gap: 10px; align-items: center;
   font-size: 7px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
-  border-top: 1px solid var(--rule); background: var(--warm-white);
+  border-top: 1px solid var(--rule); background: var(--warm-white); flex-wrap: wrap;
 }
 .legend-dot { display: inline-block; width: 4px; height: 4px; border-radius: 50%; margin-right: 3px; vertical-align: middle; }
 .legend-shoot { display: inline-block; width: 8px; height: 8px; background: var(--shoot); border: 1px solid var(--gold); margin-right: 3px; vertical-align: middle; }
@@ -191,7 +167,7 @@ tbody tr:last-child { border-bottom: none; }
   </div>
 
   <div class="bookmark-hint" id="bmHint">
-    📌 Add to Home Screen for quick access — Safari → Share → Add to Home Screen
+    📌 Add to Home Screen — Safari → Share → Add to Home Screen
     <span onclick="document.getElementById('bmHint').style.display='none'">✕</span>
   </div>
 
@@ -210,15 +186,29 @@ tbody tr:last-child { border-bottom: none; }
   <div class="legend">
     <span><span class="legend-dot" style="background:var(--brown)"></span>High</span>
     <span><span class="legend-dot" style="background:var(--tan)"></span>Low</span>
-    <span><span class="legend-dot" style="background:var(--rain)"></span>Rain%</span>
-    <span><span class="legend-shoot"></span>Shoot</span>
+    <span style="color:var(--rain);font-weight:500">40%+</span>
+    <span style="color:#b84040;font-weight:700">60%+</span>
+    <span style="color:#8b2020;font-weight:700">80%+</span>
+    <span><span class="legend-shoot"></span>Schedule</span>
     <span class="legend-note">KMA from day 3 onward</span>
   </div>
 
 </div>
 <script>
 var WD = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-var SHOOT_DATES = ['2026-05-05','2026-05-06','2026-05-07','2026-05-08','2026-05-09','2026-05-11','2026-05-12','2026-05-13','2026-05-17','2026-05-18'];
+var SCHEDULE = {
+  '2026-05-06': 'Prelight',
+  '2026-05-07': 'Shan',
+  '2026-05-08': 'Shan & Lilas',
+  '2026-05-09': 'Lilas',
+  '2026-05-11': 'Soyeon',
+  '2026-05-12': 'Product',
+  '2026-05-13': 'Product',
+  '2026-05-17': 'PP',
+  '2026-05-18': 'PP'
+};
+var SHOOT_DATES = Object.keys(SCHEDULE);
+SHOOT_DATES.push('2026-05-05');
 
 function getDates(){
   var dates=[], kst=new Date(Date.now()+9*3600000);
@@ -229,6 +219,13 @@ function getDates(){
   return dates;
 }
 function todayKST(){ return getDates()[0]; }
+
+function popClass(pop){
+  if(pop>=80) return 'cell-pop p80';
+  if(pop>=60) return 'cell-pop p60';
+  if(pop>=40) return 'cell-pop p40';
+  return 'cell-pop';
+}
 
 function load(){
   document.getElementById('upd').textContent='Updating...';
@@ -257,7 +254,7 @@ function load(){
 }
 
 function renderBadges(sources){
-  var colors=['#6b8c6b','#6b8fa3','#a07850','#8b6f9e','#c9952a','#5a7a8a'];
+  var colors=['#6b8c6b','#6b8fa3','#8b6f9e','#5a7a8a','#a07850','#fb923c'];
   var sites=[
     { label:'Meteo', url:'https://www.windy.com/?37.5047,127.0014,13' },
     { label:'W.Bit', url:'https://weather.com/weather/tenday/l/37.5047,127.0014' },
@@ -279,7 +276,7 @@ function renderBadges(sources){
 }
 
 function renderTable(sources){
-  var colors=['#6b8c6b','#6b8fa3','#a07850','#8b6f9e','#c9952a','#5a7a8a'];
+  var colors=['#6b8c6b','#6b8fa3','#8b6f9e','#5a7a8a','#a07850','#fb923c'];
   var dates=getDates(), today=todayKST();
 
   var hdr='<th class="th-source"></th>';
@@ -287,14 +284,16 @@ function renderTable(sources){
     var d=dates[i], p=d.split('-');
     var dt=new Date(Date.UTC(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2])));
     var isShoot=SHOOT_DATES.indexOf(d)!==-1;
+    var sched=SCHEDULE[d]||null;
     var cls='';
-    if(d===today) cls='today';
-    if(dt.getUTCDay()===0) cls+=' sun';
-    if(dt.getUTCDay()===6) cls+=' sat';
-    if(isShoot) cls+=' shoot';
+    if(d===today) cls+='today ';
+    if(dt.getUTCDay()===0) cls+='sun ';
+    if(dt.getUTCDay()===6) cls+='sat ';
+    if(isShoot) cls+='shoot';
     hdr+='<th class="th-date '+cls+'">'+
       '<div class="date-md">'+(dt.getUTCMonth()+1)+'/'+dt.getUTCDate()+'</div>'+
       '<div class="date-wd">'+WD[dt.getUTCDay()]+'</div>'+
+      (sched?'<div class="date-schedule">'+sched+'</div>':'')+
       '</th>';
   }
 
@@ -315,7 +314,7 @@ function renderTable(sources){
           '<div class="cell-icon">'+(c.icon||'🌤️')+'</div>'+
           '<div class="cell-max">'+(c.max!=null?c.max+'°':'—')+'</div>'+
           '<div class="cell-min">'+(c.min!=null?c.min+'°':'—')+'</div>'+
-          '<div class="cell-pop'+(pop>=40?' hi':'')+'">'+pop+'%</div></td>';
+          '<div class="'+popClass(pop)+'">'+pop+'%</div></td>';
       }
     }
     rows+='</tr>';
