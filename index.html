@@ -214,13 +214,13 @@ function load(){
 
 function renderBadges(sources){
   var colors=['#6b8c6b','#6b8fa3','#a07850','#8b6f9e','#c9952a','#5a7a8a'];
-  var sites=[
+    var sites=[
     { label:'Meteo',  url:'https://www.windy.com/?37.5047,127.0014,13' },
     { label:'W.Bit',  url:'https://weather.com/weather/tenday/l/37.5047,127.0014' },
-    { label:'OWM',    url:'https://openweathermap.org/find?q=banpo+seoul' },
     { label:'W.API',  url:'https://www.accuweather.com/en/kr/banpo-dong/226081/10-day-weather-forecast/226081' },
-    { label:'Tmrw',   url:'https://www.tomorrow.io/weather/37.5047,127.0014/daily/' },
     { label:'WWO',    url:'https://www.worldweatheronline.com/banpo-dong-weather/seoul/kr.aspx' },
+    { label:'OWM',    url:'https://openweathermap.org/find?q=banpo+seoul' },
+    { label:'Tmrw',   url:'https://www.tomorrow.io/weather/37.5047,127.0014/daily/' },
   ];
   var html='';
   for(var i=0;i<sites.length;i++){
