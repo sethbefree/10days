@@ -18,6 +18,7 @@
   --rule: #d6c9b8;
   --muted: #9e8e80;
   --rain: #6b8fa3;
+  --shoot: #fdf0e0;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; overflow: hidden; background: var(--cream); font-family: 'Jost', sans-serif; font-weight: 300; }
@@ -47,13 +48,34 @@ html, body { height: 100%; overflow: hidden; background: var(--cream); font-fami
 }
 .rf-btn:active { background: var(--gold); color: var(--brown); }
 
+/* Bookmark hint */
+.bookmark-hint {
+  flex-shrink: 0;
+  padding: 5px 14px;
+  background: #fdf8f0;
+  border-bottom: 1px solid var(--gold-lt);
+  font-size: 9px;
+  color: var(--tan);
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.bookmark-hint span { cursor: pointer; opacity: 0.5; flex-shrink: 0; font-size: 11px; }
+
 /* Badges */
 .badges-wrap {
   flex-shrink: 0; padding: 5px 14px;
   display: flex; gap: 4px; flex-wrap: wrap;
   background: var(--warm-white); border-bottom: 1px solid var(--rule);
 }
-.badge { display: flex; align-items: center; gap: 4px; padding: 2px 7px; border: 1px solid var(--rule); font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; }
+.badge {
+  display: flex; align-items: center; gap: 4px;
+  padding: 2px 7px; border: 1px solid var(--rule);
+  font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase;
+  text-decoration: none;
+}
 .badge-dot { width: 4px; height: 4px; border-radius: 50%; flex-shrink: 0; }
 .badge-days { color: var(--muted); }
 
@@ -75,14 +97,22 @@ thead tr { height: 40px; }
   border-bottom: 2px solid var(--gold); border-right: 1px solid var(--rule);
   white-space: nowrap; width: 52px;
 }
-.th-date { text-align: center; border-bottom: 2px solid var(--rule); background: var(--warm-white); padding: 0 1px; }
+.th-date {
+  text-align: center; border-bottom: 2px solid var(--rule);
+  background: var(--warm-white); padding: 0 1px;
+}
 .th-date.today { border-bottom-color: var(--gold); background: #fdf8f0; }
+.th-date.shoot { background: var(--shoot); border-bottom-color: var(--gold); }
+.th-date.today.shoot { background: #fdecd6; }
 .th-date.sun .date-md { color: #8b4a3a; }
 .th-date.sat .date-md { color: var(--rain); }
+
 .date-md { font-family: 'Cormorant Garamond', serif; font-size: 13px; font-weight: 400; color: var(--brown); line-height: 1.1; }
 .th-date.today .date-md { color: var(--gold); }
+.th-date.shoot .date-md { color: var(--brown); font-weight: 600; }
 .date-wd { font-size: 7px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
 .th-date.today .date-wd { color: var(--gold-lt); }
+.shoot-label { font-size: 7px; color: var(--gold); letter-spacing: 0; margin-top: 1px; }
 
 tbody tr { border-bottom: 1px solid var(--parchment); }
 tbody tr:last-child { border-bottom: none; }
@@ -93,8 +123,13 @@ tbody tr:last-child { border-bottom: none; }
   font-weight: 500; white-space: nowrap; border-right: 1px solid var(--rule);
   vertical-align: middle; width: 52px;
 }
-.td-cell { text-align: center; border-left: 1px solid var(--parchment); background: var(--cream); vertical-align: middle; padding: 1px; }
+.td-cell {
+  text-align: center; border-left: 1px solid var(--parchment);
+  background: var(--cream); vertical-align: middle; padding: 1px;
+}
 .td-cell.today { background: #fdf8f0; }
+.td-cell.shoot { background: var(--shoot); }
+.td-cell.today.shoot { background: #fdecd6; }
 
 .cell-icon { font-size: 15px; line-height: 1.1; }
 .cell-max { font-family: 'Cormorant Garamond', serif; font-size: 12px; font-weight: 600; color: var(--brown); line-height: 1.1; }
@@ -118,9 +153,9 @@ tbody tr:last-child { border-bottom: none; }
   border-top: 1px solid var(--rule); background: var(--warm-white);
 }
 .legend-dot { display: inline-block; width: 4px; height: 4px; border-radius: 50%; margin-right: 3px; vertical-align: middle; }
+.legend-shoot { display: inline-block; width: 8px; height: 8px; background: var(--shoot); border: 1px solid var(--gold); margin-right: 3px; vertical-align: middle; }
 .legend-note { margin-left: auto; font-style: italic; text-transform: none; letter-spacing: 0; font-size: 8px; }
 
-/* Desktop */
 @media (min-width: 768px) {
   .header { padding: 12px 32px; }
   .title { font-size: 22px; }
@@ -129,7 +164,6 @@ tbody tr:last-child { border-bottom: none; }
   .badge { font-size: 9px; padding: 3px 10px; }
   .th-source { width: 70px; font-size: 8px; }
   .td-source { width: 70px; font-size: 9px; }
-  .th-date { padding: 0 2px; }
   .date-md { font-size: 15px; }
   .date-wd { font-size: 8px; }
   .cell-icon { font-size: 18px; }
@@ -138,11 +172,13 @@ tbody tr:last-child { border-bottom: none; }
   .cell-pop { font-size: 9px; }
   .legend { padding: 6px 32px; font-size: 8px; }
   .table-outer::after { display: none; }
+  .bookmark-hint { padding: 5px 32px; }
 }
 </style>
 </head>
 <body>
 <div class="layout">
+
   <div class="header">
     <div>
       <div class="brand">Coach — Production Weather</div>
@@ -152,6 +188,11 @@ tbody tr:last-child { border-bottom: none; }
       <div class="upd" id="upd">—</div>
       <button class="rf-btn" id="rfBtn">Refresh</button>
     </div>
+  </div>
+
+  <div class="bookmark-hint" id="bmHint">
+    📌 Add to Home Screen for quick access — Safari → Share → Add to Home Screen
+    <span onclick="document.getElementById('bmHint').style.display='none'">✕</span>
   </div>
 
   <div class="badges-wrap" id="badges"></div>
@@ -170,12 +211,15 @@ tbody tr:last-child { border-bottom: none; }
     <span><span class="legend-dot" style="background:var(--brown)"></span>High</span>
     <span><span class="legend-dot" style="background:var(--tan)"></span>Low</span>
     <span><span class="legend-dot" style="background:var(--rain)"></span>Rain%</span>
+    <span><span class="legend-shoot"></span>Shoot</span>
     <span class="legend-note">KMA from day 3 onward</span>
   </div>
-</div>
 
+</div>
 <script>
-var WD=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+var WD = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+var SHOOT_DATES = ['2026-05-05','2026-05-06','2026-05-07','2026-05-08','2026-05-09','2026-05-11','2026-05-12','2026-05-13','2026-05-17','2026-05-18'];
+
 function getDates(){
   var dates=[], kst=new Date(Date.now()+9*3600000);
   for(var i=0;i<10;i++){
@@ -214,17 +258,17 @@ function load(){
 
 function renderBadges(sources){
   var colors=['#6b8c6b','#6b8fa3','#a07850','#8b6f9e','#c9952a','#5a7a8a'];
-    var sites=[
-    { label:'Meteo',  url:'https://www.windy.com/?37.5047,127.0014,13' },
-    { label:'W.Bit',  url:'https://weather.com/weather/tenday/l/37.5047,127.0014' },
-    { label:'W.API',  url:'https://www.accuweather.com/en/kr/banpo-dong/226081/10-day-weather-forecast/226081' },
-    { label:'WWO',    url:'https://www.worldweatheronline.com/banpo-dong-weather/seoul/kr.aspx' },
-    { label:'OWM',    url:'https://openweathermap.org/find?q=banpo+seoul' },
-    { label:'Tmrw',   url:'https://www.tomorrow.io/weather/37.5047,127.0014/daily/' },
+  var sites=[
+    { label:'Meteo', url:'https://www.windy.com/?37.5047,127.0014,13' },
+    { label:'W.Bit', url:'https://weather.com/weather/tenday/l/37.5047,127.0014' },
+    { label:'W.API', url:'https://www.accuweather.com/en/kr/banpo-dong/226081/10-day-weather-forecast/226081' },
+    { label:'WWO',   url:'https://www.worldweatheronline.com/banpo-dong-weather/seoul/kr.aspx' },
+    { label:'OWM',   url:'https://openweathermap.org/find?q=banpo+seoul' },
+    { label:'Tmrw',  url:'https://www.tomorrow.io/weather/37.5047,127.0014/daily/' },
   ];
   var html='';
   for(var i=0;i<sites.length;i++){
-    var s=sources[i]||{},c=s.error?'#c0a090':colors[i%colors.length];
+    var s=sources[i]||{}, c=s.error?'#c0a090':colors[i%colors.length];
     html+='<a href="'+sites[i].url+'" target="_blank" rel="noopener" class="badge" style="text-decoration:none">'+
       '<div class="badge-dot" style="background:'+c+'"></div>'+
       '<span style="color:'+c+';font-weight:500">'+sites[i].label+'</span>'+
@@ -236,24 +280,34 @@ function renderBadges(sources){
 
 function renderTable(sources){
   var colors=['#6b8c6b','#6b8fa3','#a07850','#8b6f9e','#c9952a','#5a7a8a'];
-  var dates=getDates(),today=todayKST();
+  var dates=getDates(), today=todayKST();
+
   var hdr='<th class="th-source"></th>';
   for(var i=0;i<dates.length;i++){
-    var d=dates[i],p=d.split('-');
+    var d=dates[i], p=d.split('-');
     var dt=new Date(Date.UTC(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2])));
-    var cls=d===today?'today':dt.getUTCDay()===0?'sun':dt.getUTCDay()===6?'sat':'';
+    var isShoot=SHOOT_DATES.indexOf(d)!==-1;
+    var cls='';
+    if(d===today) cls='today';
+    if(dt.getUTCDay()===0) cls+=' sun';
+    if(dt.getUTCDay()===6) cls+=' sat';
+    if(isShoot) cls+=' shoot';
     hdr+='<th class="th-date '+cls+'">'+
       '<div class="date-md">'+(dt.getUTCMonth()+1)+'/'+dt.getUTCDate()+'</div>'+
-      '<div class="date-wd">'+WD[dt.getUTCDay()]+'</div></th>';
+      '<div class="date-wd">'+WD[dt.getUTCDay()]+'</div>'+
+      (isShoot?'<div class="shoot-label">🎬</div>':'')+
+      '</th>';
   }
+
   var rows='';
   for(var si=0;si<sources.length;si++){
-    var src=sources[si],col=colors[si%colors.length];
+    var src=sources[si], col=colors[si%colors.length];
     rows+='<tr><td class="td-source" style="color:'+col+'">'+src.name+'</td>';
     for(var di=0;di<dates.length;di++){
-      var date=dates[di],c=null;
+      var date=dates[di], c=null;
+      var isShoot=SHOOT_DATES.indexOf(date)!==-1;
       for(var ci=0;ci<(src.data||[]).length;ci++){if(src.data[ci].date===date){c=src.data[ci];break;}}
-      var tdCls='td-cell'+(date===today?' today':'');
+      var tdCls='td-cell'+(date===today?' today':'')+(isShoot?' shoot':'');
       if(!c){
         rows+='<td class="'+tdCls+'"><span class="'+(src.error?'cell-err':'cell-dash')+'">'+(src.error?'n/a':'—')+'</span></td>';
       } else {
@@ -267,6 +321,7 @@ function renderTable(sources){
     }
     rows+='</tr>';
   }
+
   document.getElementById('content').innerHTML=
     '<table><thead><tr>'+hdr+'</tr></thead><tbody>'+rows+'</tbody></table>';
 }
