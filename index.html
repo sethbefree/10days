@@ -214,22 +214,21 @@ function load(){
 
 function renderBadges(sources){
   var colors=['#6b8c6b','#6b8fa3','#a07850','#8b6f9e','#c9952a','#5a7a8a'];
-  var urls=[
-    'https://open-meteo.com/en/docs#latitude=37.5665&longitude=126.978',
-    'https://www.weatherbit.io/api/swaggerui/weather-api-v2#!/Current32Weather32Data/get_current_city',
-    'https://openweathermap.org/city/1835848',
-    'https://www.weatherapi.com/weather/q/seoul-1835848',
-    'https://www.tomorrow.io/weather/KR/Seoul/1835848/daily/',
-    'https://www.worldweatheronline.com/seoul-weather/seoul/kr.aspx'
+  var sites=[
+    { label:'Meteo',  url:'https://www.windy.com/?37.5047,127.0014,13' },
+    { label:'W.Bit',  url:'https://weather.com/weather/tenday/l/37.5047,127.0014' },
+    { label:'OWM',    url:'https://openweathermap.org/find?q=banpo+seoul' },
+    { label:'W.API',  url:'https://www.accuweather.com/en/kr/banpo-dong/226081/10-day-weather-forecast/226081' },
+    { label:'Tmrw',   url:'https://www.tomorrow.io/weather/37.5047,127.0014/daily/' },
+    { label:'WWO',    url:'https://www.worldweatheronline.com/banpo-dong-weather/seoul/kr.aspx' },
   ];
   var html='';
-  for(var i=0;i<sources.length;i++){
-    var s=sources[i],c=s.error?'#c0a090':colors[i%colors.length];
-    html+='<a href="'+urls[i]+'" target="_blank" rel="noopener" class="badge" style="text-decoration:none">'+
+  for(var i=0;i<sites.length;i++){
+    var s=sources[i]||{},c=s.error?'#c0a090':colors[i%colors.length];
+    html+='<a href="'+sites[i].url+'" target="_blank" rel="noopener" class="badge" style="text-decoration:none">'+
       '<div class="badge-dot" style="background:'+c+'"></div>'+
-      '<span style="color:'+c+';font-weight:500">'+s.name+'</span>'+
-      '<span class="badge-days">'+(s.error?'err':s.data.length+'d')+'</span>'+
-      '<span style="color:var(--rule);font-size:7px;margin-left:1px">↗</span>'+
+      '<span style="color:'+c+';font-weight:500">'+sites[i].label+'</span>'+
+      '<span style="color:var(--rule);font-size:7px;margin-left:2px">↗</span>'+
       '</a>';
   }
   document.getElementById('badges').innerHTML=html;
