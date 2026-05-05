@@ -25,41 +25,81 @@ html, body { height: 100%; overflow: hidden; background: var(--cream); font-fami
 
 .layout { display: flex; flex-direction: column; height: 100vh; height: 100dvh; }
 
+/* ── Header ── */
 .header {
-  flex-shrink: 0; background: var(--brown); padding: 8px 14px;
-  display: flex; justify-content: space-between; align-items: center;
-  border-bottom: 2px solid var(--gold); gap: 10px;
+  flex-shrink: 0;
+  background: var(--brown);
+  padding: 8px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--gold);
+  gap: 8px;
+  min-width: 0;
 }
-.brand { font-family: 'Cormorant Garamond', serif; font-size: 8px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold-lt); margin-bottom: 1px; }
-.title { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-weight: 300; color: #faf7f2; letter-spacing: 0.04em; white-space: nowrap; }
+.header-left { min-width: 0; overflow: hidden; }
+.brand {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 8px; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--gold-lt);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(13px, 2.5vw, 20px);
+  font-weight: 300; color: #faf7f2;
+  letter-spacing: 0.03em; white-space: nowrap;
+}
 .title em { font-style: italic; color: var(--gold-lt); }
-.header-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
-.upd { font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #a08878; white-space: nowrap; }
-.rf-btn {
-  background: transparent; border: 1px solid var(--gold); color: var(--gold-lt);
-  font-family: 'Jost', sans-serif; font-size: 8px; letter-spacing: 0.18em;
-  text-transform: uppercase; padding: 4px 10px; cursor: pointer; white-space: nowrap;
-}
-.rf-btn:active { background: var(--gold); color: var(--brown); }
 
+.header-right {
+  display: flex; align-items: center;
+  gap: 6px; flex-shrink: 0;
+}
+.upd {
+  font-size: clamp(7px, 1.2vw, 9px);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: #a08878; white-space: nowrap;
+}
+.btn {
+  background: transparent; border: 1px solid var(--gold);
+  color: var(--gold-lt); font-family: 'Jost', sans-serif;
+  font-size: clamp(7px, 1.2vw, 9px); letter-spacing: 0.15em;
+  text-transform: uppercase; padding: 4px 8px;
+  cursor: pointer; white-space: nowrap;
+  text-decoration: none; display: inline-block;
+}
+.btn:active { background: var(--gold); color: var(--brown); }
+
+/* ── Bookmark hint ── */
 .bookmark-hint {
-  flex-shrink: 0; padding: 5px 14px; background: #fdf8f0;
-  border-bottom: 1px solid var(--gold-lt); font-size: 9px; color: var(--tan);
-  letter-spacing: 0.04em; display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  flex-shrink: 0; padding: 4px 14px;
+  background: #fdf8f0; border-bottom: 1px solid var(--gold-lt);
+  font-size: 9px; color: var(--tan); letter-spacing: 0.04em;
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  white-space: nowrap; overflow: hidden;
 }
-.bookmark-hint span { cursor: pointer; opacity: 0.5; flex-shrink: 0; font-size: 11px; }
+.bookmark-hint .bh-text { overflow: hidden; text-overflow: ellipsis; }
+.bookmark-hint .bh-close { cursor: pointer; opacity: 0.5; flex-shrink: 0; font-size: 11px; }
 
+/* ── Badges ── */
 .badges-wrap {
-  flex-shrink: 0; padding: 5px 14px; display: flex; gap: 4px; flex-wrap: wrap;
+  flex-shrink: 0; padding: 5px 14px;
+  display: flex; gap: 4px; flex-wrap: nowrap;
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
   background: var(--warm-white); border-bottom: 1px solid var(--rule);
+  scrollbar-width: none;
 }
+.badges-wrap::-webkit-scrollbar { display: none; }
 .badge {
-  display: flex; align-items: center; gap: 4px; padding: 2px 7px;
-  border: 1px solid var(--rule); font-size: 8px; letter-spacing: 0.08em;
-  text-transform: uppercase; text-decoration: none;
+  display: flex; align-items: center; gap: 4px;
+  padding: 2px 7px; border: 1px solid var(--rule);
+  font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase;
+  text-decoration: none; flex-shrink: 0;
 }
 .badge-dot { width: 4px; height: 4px; border-radius: 50%; flex-shrink: 0; }
 
+/* ── Table area ── */
 .table-outer { flex: 1; overflow: hidden; position: relative; min-height: 0; }
 .table-outer::after {
   content: ''; position: absolute; top: 0; right: 0; bottom: 0; width: 20px;
@@ -67,15 +107,15 @@ html, body { height: 100%; overflow: hidden; background: var(--cream); font-fami
 }
 .table-wrap { width: 100%; height: 100%; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; }
 
-table { border-collapse: collapse; height: 100%; min-width: 600px; width: 100%; table-layout: fixed; }
+table { border-collapse: collapse; height: 100%; min-width: 560px; width: 100%; table-layout: fixed; }
 thead tr { height: auto; }
 
 .th-source {
   position: sticky; left: 0; z-index: 3; background: var(--warm-white);
-  padding: 0 8px; text-align: left; font-size: 7px; letter-spacing: 0.2em;
+  padding: 0 6px; text-align: left; font-size: 7px; letter-spacing: 0.15em;
   text-transform: uppercase; color: var(--muted); font-weight: 400;
   border-bottom: 2px solid var(--gold); border-right: 1px solid var(--rule);
-  white-space: nowrap; width: 52px; vertical-align: bottom;
+  white-space: nowrap; width: 48px; vertical-align: bottom; padding-bottom: 4px;
 }
 .th-date {
   text-align: center; border-bottom: 2px solid var(--rule);
@@ -86,8 +126,11 @@ thead tr { height: auto; }
 .th-date.today.shoot { background: #fdecd6; }
 .th-date.sun .date-md { color: #8b4a3a; }
 .th-date.sat .date-md { color: var(--rain); }
-
-.date-md { font-family: 'Cormorant Garamond', serif; font-size: 13px; font-weight: 400; color: var(--brown); line-height: 1.1; }
+.date-md {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(11px, 1.8vw, 15px);
+  font-weight: 400; color: var(--brown); line-height: 1.1;
+}
 .th-date.today .date-md { color: var(--gold); }
 .th-date.shoot .date-md { font-weight: 600; }
 .date-wd { font-size: 7px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
@@ -99,79 +142,67 @@ tbody tr:last-child { border-bottom: none; }
 
 .td-source {
   position: sticky; left: 0; z-index: 2; background: var(--warm-white);
-  padding: 0 8px; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase;
-  font-weight: 500; white-space: nowrap; border-right: 1px solid var(--rule);
-  vertical-align: middle; width: 52px;
+  padding: 0 6px; font-size: clamp(7px, 1.2vw, 9px); letter-spacing: 0.1em;
+  text-transform: uppercase; font-weight: 500; white-space: nowrap;
+  border-right: 1px solid var(--rule); vertical-align: middle; width: 48px;
 }
-.td-cell { text-align: center; border-left: 1px solid var(--parchment); background: var(--cream); vertical-align: middle; padding: 2px 1px; }
+.td-cell {
+  text-align: center; border-left: 1px solid var(--parchment);
+  background: var(--cream); vertical-align: middle; padding: 2px 1px;
+}
 .td-cell.today { background: #fdf8f0; }
 .td-cell.shoot { background: var(--shoot); }
 .td-cell.today.shoot { background: #fdecd6; }
 
-.cell-icon { font-size: 15px; line-height: 1.1; }
-.cell-max { font-family: 'Cormorant Garamond', serif; font-size: 12px; font-weight: 600; color: var(--brown); line-height: 1.1; }
-.cell-min { font-family: 'Cormorant Garamond', serif; font-size: 11px; font-weight: 300; color: var(--tan); line-height: 1.1; }
-.cell-pop { font-size: 8px; color: var(--muted); font-weight: 400; }
+.cell-icon { font-size: clamp(13px, 2vw, 18px); line-height: 1.1; }
+.cell-max { font-family: 'Cormorant Garamond', serif; font-size: clamp(11px, 1.8vw, 14px); font-weight: 600; color: var(--brown); line-height: 1.1; }
+.cell-min { font-family: 'Cormorant Garamond', serif; font-size: clamp(10px, 1.5vw, 12px); font-weight: 300; color: var(--tan); line-height: 1.1; }
+.cell-pop { font-size: clamp(7px, 1.1vw, 9px); color: var(--muted); font-weight: 400; }
 .cell-pop.p40 { color: var(--rain); font-weight: 500; }
-.cell-pop.p60 { color: #b84040; font-weight: 700; font-size: 9px; }
-.cell-pop.p80 { color: #8b2020; font-weight: 700; font-size: 10px; }
+.cell-pop.p60 { color: #b84040; font-weight: 700; }
+.cell-pop.p80 { color: #8b2020; font-weight: 700; }
 .cell-dash { color: var(--rule); font-size: 11px; }
 .cell-err { color: var(--rule); font-size: 7px; }
 
+/* ── Loading ── */
 .loading { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: var(--warm-white); }
 .loading-icon { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-style: italic; color: var(--gold); margin-bottom: 10px; }
 .loading-text { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--tan); }
 .loading-sub { font-size: 9px; color: var(--muted); margin-top: 5px; font-style: italic; }
 
+/* ── Legend ── */
 .legend {
-  flex-shrink: 0; padding: 5px 14px; display: flex; gap: 10px; align-items: center;
-  font-size: 7px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
-  border-top: 1px solid var(--rule); background: var(--warm-white); flex-wrap: wrap;
+  flex-shrink: 0; padding: 4px 14px;
+  display: flex; gap: 8px; align-items: center;
+  font-size: 7px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
+  border-top: 1px solid var(--rule); background: var(--warm-white);
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; flex-wrap: nowrap; white-space: nowrap;
 }
+.legend::-webkit-scrollbar { display: none; }
 .legend-dot { display: inline-block; width: 4px; height: 4px; border-radius: 50%; margin-right: 3px; vertical-align: middle; }
-.legend-shoot { display: inline-block; width: 8px; height: 8px; background: var(--shoot); border: 1px solid var(--gold); margin-right: 3px; vertical-align: middle; }
-.legend-note { margin-left: auto; font-style: italic; text-transform: none; letter-spacing: 0; font-size: 8px; }
-
-@media (min-width: 768px) {
-  .header { padding: 12px 32px; }
-  .title { font-size: 22px; }
-  .brand { font-size: 10px; }
-  .badges-wrap { padding: 8px 32px; gap: 6px; }
-  .badge { font-size: 9px; padding: 3px 10px; }
-  .th-source { width: 70px; font-size: 8px; }
-  .td-source { width: 70px; font-size: 9px; }
-  .date-md { font-size: 15px; }
-  .date-wd { font-size: 8px; }
-  .cell-icon { font-size: 18px; }
-  .cell-max { font-size: 14px; }
-  .cell-min { font-size: 12px; }
-  .cell-pop { font-size: 9px; }
-  .legend { padding: 6px 32px; font-size: 8px; }
-  .table-outer::after { display: none; }
-  .bookmark-hint { padding: 5px 32px; }
-}
+.legend-shoot { display: inline-block; width: 7px; height: 7px; background: var(--shoot); border: 1px solid var(--gold); margin-right: 3px; vertical-align: middle; }
+.legend-note { margin-left: auto; font-style: italic; text-transform: none; letter-spacing: 0; padding-left: 8px; flex-shrink: 0; }
 </style>
 </head>
 <body>
 <div class="layout">
 
-    <div class="header">
-    <div>
+  <div class="header">
+    <div class="header-left">
       <div class="brand">Coach — Production Weather</div>
       <div class="title">Seoul <em>10-Day</em> Forecast</div>
     </div>
     <div class="header-right">
       <div class="upd" id="upd">—</div>
-      <a href="https://sethbefree.github.io/-coach-crew-dashboard/" target="_blank" rel="noopener" style="background:transparent;border:1px solid var(--gold);color:var(--gold-lt);font-family:'Jost',sans-serif;font-size:8px;letter-spacing:0.18em;text-transform:uppercase;padding:4px 10px;white-space:nowrap;text-decoration:none;">
-        Crew →
-      </a>
-      <button class="rf-btn" id="rfBtn">Refresh</button>
+      <a href="https://sethbefree.github.io/-coach-crew-dashboard/" target="_blank" rel="noopener" class="btn">Crew →</a>
+      <button class="btn" id="rfBtn">Refresh</button>
     </div>
   </div>
 
   <div class="bookmark-hint" id="bmHint">
-    📌 Add to Home Screen — Safari → Share → Add to Home Screen
-    <span onclick="document.getElementById('bmHint').style.display='none'">✕</span>
+    <span class="bh-text">📌 Add to Home Screen — Safari → Share → Add to Home Screen</span>
+    <span class="bh-close" onclick="document.getElementById('bmHint').style.display='none'">✕</span>
   </div>
 
   <div class="badges-wrap" id="badges"></div>
