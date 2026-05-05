@@ -22,84 +22,49 @@
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; overflow: hidden; background: var(--cream); font-family: 'Jost', sans-serif; font-weight: 300; }
-
 .layout { display: flex; flex-direction: column; height: 100vh; height: 100dvh; }
 
-/* ── Header ── */
 .header {
-  flex-shrink: 0;
-  background: var(--brown);
-  padding: 8px 14px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 2px solid var(--gold);
-  gap: 8px;
-  min-width: 0;
+  flex-shrink: 0; background: var(--brown); padding: 8px 14px;
+  display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 2px solid var(--gold); gap: 8px; min-width: 0;
 }
 .header-left { min-width: 0; overflow: hidden; }
-.brand {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 8px; letter-spacing: 0.22em;
-  text-transform: uppercase; color: var(--gold-lt);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(13px, 2.5vw, 20px);
-  font-weight: 300; color: #faf7f2;
-  letter-spacing: 0.03em; white-space: nowrap;
-}
+.brand { font-family: 'Cormorant Garamond', serif; font-size: 8px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold-lt); white-space: nowrap; }
+.title { font-family: 'Cormorant Garamond', serif; font-size: clamp(13px,2.5vw,20px); font-weight: 300; color: #faf7f2; letter-spacing: 0.03em; white-space: nowrap; }
 .title em { font-style: italic; color: var(--gold-lt); }
-
-.header-right {
-  display: flex; align-items: center;
-  gap: 6px; flex-shrink: 0;
-}
-.upd {
-  font-size: clamp(7px, 1.2vw, 9px);
-  letter-spacing: 0.08em; text-transform: uppercase;
-  color: #a08878; white-space: nowrap;
-}
+.header-right { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.upd { font-size: clamp(7px,1.2vw,9px); letter-spacing: 0.08em; text-transform: uppercase; color: #a08878; white-space: nowrap; }
 .btn {
-  background: transparent; border: 1px solid var(--gold);
-  color: var(--gold-lt); font-family: 'Jost', sans-serif;
-  font-size: clamp(7px, 1.2vw, 9px); letter-spacing: 0.15em;
-  text-transform: uppercase; padding: 4px 8px;
-  cursor: pointer; white-space: nowrap;
+  background: transparent; border: 1px solid var(--gold); color: var(--gold-lt);
+  font-family: 'Jost', sans-serif; font-size: clamp(7px,1.2vw,9px); letter-spacing: 0.15em;
+  text-transform: uppercase; padding: 4px 8px; cursor: pointer; white-space: nowrap;
   text-decoration: none; display: inline-block;
 }
 .btn:active { background: var(--gold); color: var(--brown); }
 
-/* ── Bookmark hint ── */
 .bookmark-hint {
-  flex-shrink: 0; padding: 4px 14px;
-  background: #fdf8f0; border-bottom: 1px solid var(--gold-lt);
-  font-size: 9px; color: var(--tan); letter-spacing: 0.04em;
+  flex-shrink: 0; padding: 4px 14px; background: #fdf8f0;
+  border-bottom: 1px solid var(--gold-lt); font-size: 9px; color: var(--tan);
   display: flex; align-items: center; justify-content: space-between; gap: 8px;
-  white-space: nowrap; overflow: hidden;
 }
-.bookmark-hint .bh-text { overflow: hidden; text-overflow: ellipsis; }
-.bookmark-hint .bh-close { cursor: pointer; opacity: 0.5; flex-shrink: 0; font-size: 11px; }
+.bookmark-hint .bh-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bookmark-hint .bh-close { cursor: pointer; opacity: 0.5; flex-shrink: 0; }
 
-/* ── Badges ── */
 .badges-wrap {
-  flex-shrink: 0; padding: 5px 14px;
-  display: flex; gap: 4px; flex-wrap: nowrap;
-  overflow-x: auto; -webkit-overflow-scrolling: touch;
+  flex-shrink: 0; padding: 5px 14px; display: flex; gap: 4px;
+  flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch;
   background: var(--warm-white); border-bottom: 1px solid var(--rule);
   scrollbar-width: none;
 }
 .badges-wrap::-webkit-scrollbar { display: none; }
 .badge {
-  display: flex; align-items: center; gap: 4px;
-  padding: 2px 7px; border: 1px solid var(--rule);
-  font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase;
-  text-decoration: none; flex-shrink: 0;
+  display: flex; align-items: center; gap: 4px; padding: 2px 7px;
+  border: 1px solid var(--rule); font-size: 8px; letter-spacing: 0.08em;
+  text-transform: uppercase; text-decoration: none; flex-shrink: 0;
 }
 .badge-dot { width: 4px; height: 4px; border-radius: 50%; flex-shrink: 0; }
 
-/* ── Table area ── */
 .table-outer { flex: 1; overflow: hidden; position: relative; min-height: 0; }
 .table-outer::after {
   content: ''; position: absolute; top: 0; right: 0; bottom: 0; width: 20px;
@@ -108,81 +73,133 @@ html, body { height: 100%; overflow: hidden; background: var(--cream); font-fami
 .table-wrap { width: 100%; height: 100%; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; }
 
 table { border-collapse: collapse; height: 100%; min-width: 560px; width: 100%; table-layout: fixed; }
-thead tr { height: auto; }
 
 .th-source {
   position: sticky; left: 0; z-index: 3; background: var(--warm-white);
-  padding: 0 6px; text-align: left; font-size: 7px; letter-spacing: 0.15em;
+  padding: 0 6px 4px; text-align: left; font-size: 7px; letter-spacing: 0.15em;
   text-transform: uppercase; color: var(--muted); font-weight: 400;
   border-bottom: 2px solid var(--gold); border-right: 1px solid var(--rule);
-  white-space: nowrap; width: 48px; vertical-align: bottom; padding-bottom: 4px;
+  white-space: nowrap; width: 48px; vertical-align: bottom;
 }
 .th-date {
   text-align: center; border-bottom: 2px solid var(--rule);
   background: var(--warm-white); padding: 4px 1px; vertical-align: top;
+  cursor: pointer; transition: background 0.15s; user-select: none;
 }
+.th-date:hover { background: #f5ede0; }
 .th-date.today { border-bottom-color: var(--gold); background: #fdf8f0; }
 .th-date.shoot { background: var(--shoot); border-bottom-color: var(--gold); }
-.th-date.today.shoot { background: #fdecd6; }
+.th-date.selected { background: #f0e8d8; border-bottom-color: var(--brown); }
 .th-date.sun .date-md { color: #8b4a3a; }
 .th-date.sat .date-md { color: var(--rain); }
-.date-md {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(11px, 1.8vw, 15px);
-  font-weight: 400; color: var(--brown); line-height: 1.1;
-}
+.date-md { font-family: 'Cormorant Garamond', serif; font-size: clamp(11px,1.8vw,15px); font-weight: 400; color: var(--brown); line-height: 1.1; }
 .th-date.today .date-md { color: var(--gold); }
 .th-date.shoot .date-md { font-weight: 600; }
 .date-wd { font-size: 7px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
-.th-date.today .date-wd { color: var(--gold-lt); }
 .date-schedule { font-size: 7px; color: var(--gold); letter-spacing: 0.03em; margin-top: 2px; line-height: 1.3; }
+.date-arrow { font-size: 7px; color: var(--gold); margin-top: 1px; }
 
 tbody tr { border-bottom: 1px solid var(--parchment); }
 tbody tr:last-child { border-bottom: none; }
 
 .td-source {
   position: sticky; left: 0; z-index: 2; background: var(--warm-white);
-  padding: 0 6px; font-size: clamp(7px, 1.2vw, 9px); letter-spacing: 0.1em;
+  padding: 0 6px; font-size: clamp(7px,1.2vw,9px); letter-spacing: 0.1em;
   text-transform: uppercase; font-weight: 500; white-space: nowrap;
   border-right: 1px solid var(--rule); vertical-align: middle; width: 48px;
 }
 .td-cell {
   text-align: center; border-left: 1px solid var(--parchment);
   background: var(--cream); vertical-align: middle; padding: 2px 1px;
+  cursor: pointer; transition: background 0.1s;
 }
+.td-cell:hover { background: #f0e8d8; }
 .td-cell.today { background: #fdf8f0; }
 .td-cell.shoot { background: var(--shoot); }
-.td-cell.today.shoot { background: #fdecd6; }
+.td-cell.selected { background: #ece0cc; }
 
-.cell-icon { font-size: clamp(13px, 2vw, 18px); line-height: 1.1; }
-.cell-max { font-family: 'Cormorant Garamond', serif; font-size: clamp(11px, 1.8vw, 14px); font-weight: 600; color: var(--brown); line-height: 1.1; }
-.cell-min { font-family: 'Cormorant Garamond', serif; font-size: clamp(10px, 1.5vw, 12px); font-weight: 300; color: var(--tan); line-height: 1.1; }
-.cell-pop { font-size: clamp(7px, 1.1vw, 9px); color: var(--muted); font-weight: 400; }
+.cell-icon { font-size: clamp(13px,2vw,18px); line-height: 1.1; }
+.cell-max { font-family: 'Cormorant Garamond', serif; font-size: clamp(11px,1.8vw,14px); font-weight: 600; color: var(--brown); line-height: 1.1; }
+.cell-min { font-family: 'Cormorant Garamond', serif; font-size: clamp(10px,1.5vw,12px); font-weight: 300; color: var(--tan); line-height: 1.1; }
+.cell-pop { font-size: clamp(7px,1.1vw,9px); color: var(--muted); font-weight: 400; }
 .cell-pop.p40 { color: var(--rain); font-weight: 500; }
 .cell-pop.p60 { color: #b84040; font-weight: 700; }
 .cell-pop.p80 { color: #8b2020; font-weight: 700; }
 .cell-dash { color: var(--rule); font-size: 11px; }
 .cell-err { color: var(--rule); font-size: 7px; }
 
-/* ── Loading ── */
 .loading { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: var(--warm-white); }
 .loading-icon { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-style: italic; color: var(--gold); margin-bottom: 10px; }
 .loading-text { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--tan); }
 .loading-sub { font-size: 9px; color: var(--muted); margin-top: 5px; font-style: italic; }
 
-/* ── Legend ── */
 .legend {
-  flex-shrink: 0; padding: 4px 14px;
-  display: flex; gap: 8px; align-items: center;
+  flex-shrink: 0; padding: 4px 14px; display: flex; gap: 8px; align-items: center;
   font-size: 7px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
   border-top: 1px solid var(--rule); background: var(--warm-white);
-  overflow-x: auto; -webkit-overflow-scrolling: touch;
-  scrollbar-width: none; flex-wrap: nowrap; white-space: nowrap;
+  overflow-x: auto; scrollbar-width: none; flex-wrap: nowrap; white-space: nowrap;
 }
 .legend::-webkit-scrollbar { display: none; }
 .legend-dot { display: inline-block; width: 4px; height: 4px; border-radius: 50%; margin-right: 3px; vertical-align: middle; }
 .legend-shoot { display: inline-block; width: 7px; height: 7px; background: var(--shoot); border: 1px solid var(--gold); margin-right: 3px; vertical-align: middle; }
 .legend-note { margin-left: auto; font-style: italic; text-transform: none; letter-spacing: 0; padding-left: 8px; flex-shrink: 0; }
+
+/* ── Hourly Panel ── */
+.hourly-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(28,22,18,0.5);
+  display: flex; align-items: flex-end;
+}
+.hourly-panel {
+  width: 100%; background: var(--warm-white);
+  border-top: 2px solid var(--gold);
+  box-shadow: 0 -4px 32px rgba(0,0,0,0.15);
+  max-height: 60vh; display: flex; flex-direction: column;
+}
+.hourly-header {
+  flex-shrink: 0; padding: 10px 16px;
+  display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 1px solid var(--rule); gap: 12px;
+}
+.hourly-title { font-family: 'Cormorant Garamond', serif; font-size: 15px; color: var(--brown); }
+.hourly-title span { color: var(--gold); font-size: 11px; margin-left: 8px; font-family: 'Jost', sans-serif; font-weight: 400; }
+.hourly-close { background: transparent; border: 1px solid var(--rule); color: var(--muted); padding: 3px 10px; font-size: 8px; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; font-family: inherit; flex-shrink: 0; }
+
+/* Source tabs */
+.hourly-tabs {
+  flex-shrink: 0; display: flex; gap: 0; overflow-x: auto;
+  border-bottom: 1px solid var(--rule); scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.hourly-tabs::-webkit-scrollbar { display: none; }
+.hourly-tab {
+  flex-shrink: 0; padding: 6px 14px; font-size: 8px; letter-spacing: 0.12em;
+  text-transform: uppercase; cursor: pointer; border: none; background: transparent;
+  border-bottom: 2px solid transparent; color: var(--muted); font-family: inherit;
+  transition: all 0.15s;
+}
+.hourly-tab.active { color: var(--brown); border-bottom-color: var(--gold); font-weight: 500; }
+.hourly-tab.err { color: var(--rule); }
+
+/* Hourly cards */
+.hourly-body { flex: 1; overflow-y: hidden; }
+.hourly-scroll { display: flex; gap: 8px; padding: 10px 14px; overflow-x: auto; height: 100%; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.hourly-scroll::-webkit-scrollbar { display: none; }
+.hourly-loading { display: flex; align-items: center; justify-content: center; height: 100%; font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); font-style: italic; }
+
+.h-card {
+  flex-shrink: 0; text-align: center; padding: 8px 10px;
+  background: var(--cream); border: 1px solid var(--rule); min-width: 58px;
+}
+.h-time { font-size: 9px; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 5px; }
+.h-icon { font-size: 18px; margin-bottom: 3px; }
+.h-temp { font-family: 'Cormorant Garamond', serif; font-size: 15px; font-weight: 600; color: var(--brown); line-height: 1.1; }
+.h-pop { font-size: 9px; margin-top: 2px; color: var(--muted); }
+.h-pop.p40 { color: var(--rain); font-weight: 500; }
+.h-pop.p60 { color: #b84040; font-weight: 700; }
+.h-pop.p80 { color: #8b2020; font-weight: 700; }
+.h-wind { font-size: 8px; color: var(--muted); margin-top: 2px; }
+.h-interval { font-size: 7px; color: var(--rule); margin-top: 2px; }
 </style>
 </head>
 <body>
@@ -224,10 +241,29 @@ tbody tr:last-child { border-bottom: none; }
     <span style="color:#b84040;font-weight:700">60%+</span>
     <span style="color:#8b2020;font-weight:700">80%+</span>
     <span><span class="legend-shoot"></span>Schedule</span>
-    <span class="legend-note">KMA from day 3 onward</span>
+    <span class="legend-note">Tap date for hourly</span>
   </div>
 
 </div>
+
+<!-- Hourly Panel -->
+<div class="hourly-overlay" id="hourlyOverlay" style="display:none" onclick="closeHourly(event)">
+  <div class="hourly-panel" onclick="event.stopPropagation()">
+    <div class="hourly-header">
+      <div>
+        <div class="hourly-title" id="hourlyTitle">—</div>
+        <div style="font-size:8px;color:var(--muted);margin-top:2px;letter-spacing:0.1em;text-transform:uppercase">Tap source to switch</div>
+      </div>
+      <button class="hourly-close" onclick="closeHourly()">Close ✕</button>
+    </div>
+    <div class="hourly-tabs" id="hourlyTabs"></div>
+    <div class="hourly-body">
+      <div class="hourly-loading" id="hourlyLoading">Loading...</div>
+      <div class="hourly-scroll" id="hourlyScroll" style="display:none"></div>
+    </div>
+  </div>
+</div>
+
 <script>
 var WD = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 var SCHEDULE = {
@@ -242,6 +278,10 @@ var SCHEDULE = {
   '2026-05-18': 'PP'
 };
 var SHOOT_DATES = Object.keys(SCHEDULE);
+
+var hourlyData = null;
+var activeTab = 0;
+var selectedDate = null;
 
 function getDates(){
   var dates=[], kst=new Date(Date.now()+9*3600000);
@@ -259,7 +299,95 @@ function popClass(pop){
   if(pop>=40) return 'cell-pop p40';
   return 'cell-pop';
 }
+function hPopClass(pop){
+  if(pop>=80) return 'h-pop p80';
+  if(pop>=60) return 'h-pop p60';
+  if(pop>=40) return 'h-pop p40';
+  return 'h-pop';
+}
 
+// ── Hourly ──────────────────────────────────────
+function openHourly(date) {
+  selectedDate = date;
+  var p = date.split('-');
+  var dt = new Date(Date.UTC(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2])));
+  var md = (dt.getUTCMonth()+1)+'/'+dt.getUTCDate()+' '+WD[dt.getUTCDay()];
+  var sched = SCHEDULE[date] || '';
+  document.getElementById('hourlyTitle').innerHTML = md + (sched ? '<span>'+sched+'</span>' : '');
+  document.getElementById('hourlyOverlay').style.display = 'flex';
+  document.getElementById('hourlyLoading').style.display = 'flex';
+  document.getElementById('hourlyScroll').style.display = 'none';
+  document.getElementById('hourlyTabs').innerHTML = '';
+  hourlyData = null;
+  activeTab = 0;
+
+  fetch('/api/hourly?date=' + date)
+    .then(function(r){ return r.json(); })
+    .then(function(json){
+      hourlyData = json.sources;
+      renderHourlyTabs();
+      renderHourlyCards(0);
+    })
+    .catch(function(e){
+      document.getElementById('hourlyLoading').textContent = 'Failed: ' + e.message;
+    });
+}
+
+function closeHourly(e) {
+  if(e && e.target !== document.getElementById('hourlyOverlay')) return;
+  document.getElementById('hourlyOverlay').style.display = 'none';
+  selectedDate = null;
+  // remove selected highlight
+  var cells = document.querySelectorAll('.selected');
+  cells.forEach(function(c){ c.classList.remove('selected'); });
+}
+
+function renderHourlyTabs() {
+  if(!hourlyData) return;
+  var html = '';
+  hourlyData.forEach(function(src, i) {
+    html += '<button class="hourly-tab'+(i===activeTab?' active':'')+(src.error?' err':'')
+      +'" onclick="switchTab('+i+')" style="color:'+(i===activeTab?'var(--brown)':src.error?'var(--rule)':src.color)+'">'+
+      src.name + (src.interval?' <span style="font-size:6px;opacity:0.6">'+src.interval+'</span>':'') +
+      (src.error?' ✕':'') + '</button>';
+  });
+  document.getElementById('hourlyTabs').innerHTML = html;
+}
+
+function switchTab(i) {
+  activeTab = i;
+  renderHourlyTabs();
+  renderHourlyCards(i);
+}
+
+function renderHourlyCards(i) {
+  var loading = document.getElementById('hourlyLoading');
+  var scroll  = document.getElementById('hourlyScroll');
+  if(!hourlyData) return;
+  var src = hourlyData[i];
+  if(src.error || !src.data || !src.data.length) {
+    loading.textContent = src.error || 'No data available';
+    loading.style.display = 'flex';
+    scroll.style.display = 'none';
+    return;
+  }
+  loading.style.display = 'none';
+  scroll.style.display = 'flex';
+  var html = '';
+  src.data.forEach(function(h) {
+    html += '<div class="h-card">'+
+      '<div class="h-time">'+h.time+'</div>'+
+      '<div class="h-icon">'+h.icon+'</div>'+
+      '<div class="h-temp">'+h.temp+'°</div>'+
+      '<div class="'+hPopClass(h.pop)+'">'+h.pop+'%</div>'+
+      '<div class="h-wind">'+h.wind+'m/s</div>'+
+      '</div>';
+  });
+  scroll.innerHTML = html;
+  scroll.scrollLeft = 0;
+}
+
+// ── Main load ──────────────────────────────────
 function load(){
   document.getElementById('upd').textContent='Updating...';
   document.getElementById('badges').innerHTML='';
@@ -322,11 +450,12 @@ function renderTable(sources){
     if(d===today) cls+='today ';
     if(dt.getUTCDay()===0) cls+='sun ';
     if(dt.getUTCDay()===6) cls+='sat ';
-    if(isShoot) cls+='shoot';
-    hdr+='<th class="th-date '+cls+'">'+
+    if(isShoot) cls+='shoot ';
+    hdr+='<th class="th-date '+cls+'" onclick="openHourly(\''+d+'\')">'+
       '<div class="date-md">'+(dt.getUTCMonth()+1)+'/'+dt.getUTCDate()+'</div>'+
       '<div class="date-wd">'+WD[dt.getUTCDay()]+'</div>'+
       (sched?'<div class="date-schedule">'+sched+'</div>':'')+
+      '<div class="date-arrow">▾</div>'+
       '</th>';
   }
 
@@ -340,10 +469,10 @@ function renderTable(sources){
       for(var ci=0;ci<(src.data||[]).length;ci++){if(src.data[ci].date===date){c=src.data[ci];break;}}
       var tdCls='td-cell'+(date===today?' today':'')+(isShoot?' shoot':'');
       if(!c){
-        rows+='<td class="'+tdCls+'"><span class="'+(src.error?'cell-err':'cell-dash')+'">'+(src.error?'n/a':'—')+'</span></td>';
+        rows+='<td class="'+tdCls+'" onclick="openHourly(\''+date+'\')"><span class="'+(src.error?'cell-err':'cell-dash')+'">'+(src.error?'n/a':'—')+'</span></td>';
       } else {
         var pop=c.pop||0;
-        rows+='<td class="'+tdCls+'">'+
+        rows+='<td class="'+tdCls+'" onclick="openHourly(\''+date+'\')">'+
           '<div class="cell-icon">'+(c.icon||'🌤️')+'</div>'+
           '<div class="cell-max">'+(c.max!=null?c.max+'°':'—')+'</div>'+
           '<div class="cell-min">'+(c.min!=null?c.min+'°':'—')+'</div>'+
